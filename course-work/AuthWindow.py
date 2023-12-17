@@ -154,10 +154,12 @@ class AuthWindow(QWidget):
         login_input = self.logLine.text()
         password_input = self.passLine.text()
 
+        auth = self.db_manager.check_credentials(login_input, password_input)
+
         # Проверка учетных данных в базе данных
-        if self.db_manager.check_credentials(login_input, password_input):
+        if auth:
             # Открываем главное окно
-            self.main_win = MainWindow()
+            self.main_win = MainWindow(auth[0])
             self.main_win.show()
 
             # Закрываем соединение с базой данных после открытия главного окна

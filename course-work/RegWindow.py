@@ -200,13 +200,16 @@ class RegWindow(QWidget):
         code_question = self.lineEdit.text()
         code_answer = self.lineEdit_2.text()
 
-        if self.db_manager.add_user(login, password, code_question, code_answer):
+        familly = self.db_manager.add_user(login, password, code_question, code_answer)
+        print(familly)
+
+        if familly:
             success_msg = MessageBox(self)
             success_msg.show_message("Успех", "Семья успешно зарегистрирована.", MessageBox.Icon.Information)
             self.close()
 
             # Открываем окно добавления банковского счета после успешной регистрации
-            self.bank_acc_dialog = BankAccWin(is_registration=True)
+            self.bank_acc_dialog = BankAccWin(familly[0], is_registration=True)
             self.bank_acc_dialog.show()
         else:
             error_msg = MessageBox(self)
@@ -216,3 +219,4 @@ class RegWindow(QWidget):
         # Закрываем соединение с базой данных при закрытии окна
         self.db_manager.close_connection()
         event.accept()
+

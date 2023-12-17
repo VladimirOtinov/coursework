@@ -3,12 +3,12 @@ from PyQt6.QtWidgets import QWidget
 from database import DatabaseManager
 
 class BankAccWin(QWidget):
-    def __init__(self, is_registration=False, user_id=None):
+    def __init__(self, user_id, is_registration=False):
         super(BankAccWin, self).__init__()
         self.main_win = None
         self.db_manager = DatabaseManager("budget.db")
         self.is_registration = is_registration
-        self.user_id = 1
+        self.user_id = user_id
         self.setupUi(self)
 
     def setupUi(self, bankAccDialog):
@@ -153,14 +153,12 @@ class BankAccWin(QWidget):
             msg = MessageBox(self)
             msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
             self.close()
-            self.main_win = MainWindow()
+            self.main_win = MainWindow(self.user_id)
             self.main_win.show()
 
         else:
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
     def back_click(self):
-        from MainWindow import MainWindow
         self.close()
-        self.main_win = MainWindow()
         self.main_win.show()

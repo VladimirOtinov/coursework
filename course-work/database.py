@@ -9,8 +9,8 @@ class DatabaseManager:
 
     def create_tables(self):
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS User (
-                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            CREATE TABLE IF NOT EXISTS familly (
+                familly_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 login TEXT,
                 password TEXT,
                 code_question TEXT,
@@ -24,8 +24,8 @@ class DatabaseManager:
                 name TEXT NOT NULL,
                 account_info TEXT,
                 money REAL NOT NULL,
-                user_id INTEGER NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES User(user_id)
+                familly_id INTEGER NOT NULL,
+                FOREIGN KEY (familly_id) REFERENCES familly(familly_id)
             )
         ''')
 
@@ -62,27 +62,32 @@ class DatabaseManager:
     def add_user(self, login, password, code_question, code_answer):
         try:
             self.cursor.execute('''
-                INSERT INTO User (login, password, code_question, code_answer)
+                INSERT INTO familly (login, password, code_question, code_answer)
                 VALUES (?, ?, ?, ?)
             ''', (login, password, code_question, code_answer))
             self.connection.commit()
-            print("Пользователь успешно добавлен.")
-            return True
+            self.cursor.execute('''
+                            SELECT * FROM familly
+                            WHERE login = ? AND password = ?
+                        ''', (login, password))
+            user_data = self.cursor.fetchone()
+            return user_data
         except sqlite3.Error as e:
             print("Ошибка при добавлении пользователя:", e)
             return False
 
+
     def check_credentials(self, login, password):
         try:
             self.cursor.execute('''
-                SELECT * FROM User
+                SELECT * FROM familly
                 WHERE login = ? AND password = ?
             ''', (login, password))
             user_data = self.cursor.fetchone()
 
             if user_data:
                 print("Вход выполнен успешно.")
-                return True
+                return user_data
             else:
                 print("Неправильный логин или пароль.")
                 return False
@@ -90,9 +95,27 @@ class DatabaseManager:
             print("Ошибка при проверке учетных данных:", e)
             return False
 
+    def get_bank_data(self, familly_id: int):
+        try:
+            self.cursor.execute('''
+                SELECT * FROM bank_accounts
+                WHERE familly_id = ?
+            ''', (familly_id,))
+            bank_data = self.cursor.fetchall()
+            print(bank_data)
+
+            if bank_data:
+                return bank_data
+            else:
+                return False
+        except sqlite3.Error as e:
+            print("get_bank_data", e)
+            return False
+
+
     def check_user_exists(self):
         try:
-            self.cursor.execute('SELECT * FROM User LIMIT 1')
+            self.cursor.execute('SELECT * FROM familly LIMIT 1')
             user_data = self.cursor.fetchone()
             return user_data is not None
         except sqlite3.Error as e:
@@ -102,8 +125,8 @@ class DatabaseManager:
     def get_security_question(self):
         try:
             self.cursor.execute('''
-                SELECT code_question FROM User
-                ORDER BY user_id ASC LIMIT 1
+                SELECT code_question FROM familly
+                ORDER BY familly_id ASC LIMIT 1
             ''')
             question = self.cursor.fetchone()
 
@@ -119,8 +142,8 @@ class DatabaseManager:
     def get_security_answer(self):
         try:
             self.cursor.execute('''
-                SELECT code_answer FROM User
-                ORDER BY user_id ASC LIMIT 1
+                SELECT code_answer FROM familly
+                ORDER BY familly_id ASC LIMIT 1
             ''')
             answer = self.cursor.fetchone()
 
@@ -136,9 +159,9 @@ class DatabaseManager:
     def change_password_by_id(self, user_id, new_password):
         try:
             self.cursor.execute('''
-                UPDATE User
+                UPDATE familly
                 SET password = ?
-                WHERE user_id = ?
+                WHERE familly_id = ?
             ''', (new_password, user_id))
             self.connection.commit()
             print("Пароль успешно изменен.")
@@ -150,7 +173,7 @@ class DatabaseManager:
     def add_bank_account(self, name, account_info, money, user_id):
         try:
             self.cursor.execute('''
-                INSERT INTO bank_accounts (name, account_info, money, user_id)
+                INSERT INTO bank_accounts (name, account_info, money, familly_id)
                 VALUES (?, ?, ?, ?)
             ''', (name, account_info, money, user_id))
             self.connection.commit()
