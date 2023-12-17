@@ -1,9 +1,8 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QDialog, QApplication, QMessageBox
 from database import DatabaseManager
+from PyQt6.QtWidgets import QWidget
 
-
-class AuthDialog(QDialog):
+class AuthWindow(QWidget):
     def __init__(self):
         super().__init__()
 
@@ -151,14 +150,14 @@ class AuthDialog(QDialog):
 
     def open_main(self):
         from message_box import MessageBox
-        from MainWindow import MyMainWindow
+        from MainWindow import MainWindow
         login_input = self.logLine.text()
         password_input = self.passLine.text()
 
         # Проверка учетных данных в базе данных
         if self.db_manager.check_credentials(login_input, password_input):
             # Открываем главное окно
-            self.main_win = MyMainWindow()
+            self.main_win = MainWindow()
             self.main_win.show()
 
             # Закрываем соединение с базой данных после открытия главного окна
@@ -177,7 +176,7 @@ class AuthDialog(QDialog):
         event.accept()
 
     def open_fpw(self):
-        from ChangePassword import ForgotPassDialog
+        from NewPassword import NewPassword
         self.close()
-        self.dlg = ForgotPassDialog()
+        self.dlg = NewPassword()
         self.dlg.open()

@@ -1,22 +1,24 @@
+
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QMainWindow
 
-
-class MyMainWindow(QWidget):
+class MainWindow(QMainWindow):
     def __init__(self):
-        super(MyMainWindow, self).__init__()
+        super(MainWindow, self).__init__()
         self.setupUi(self)
-    def setupUi(self, MyMainWindow):
-        MyMainWindow.setObjectName("MyMainWindow")
-        MyMainWindow.resize(1110, 798)
-        MyMainWindow.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 216), stop:1 rgba(179, 0, 241, 216));\n"
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1110, 740)
+        MainWindow.setStyleSheet("background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 216), stop:1 rgba(179, 0, 241, 216));\n"
 "font: 10pt \"Bahnschrift SemiLight\";\n"
 "")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(MyMainWindow)
+        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.addBankAccButton = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.addBankAccButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.addBankAccButton.setStyleSheet("QPushButton {\n"
 "font: 11pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
@@ -35,7 +37,7 @@ class MyMainWindow(QWidget):
 "}")
         self.addBankAccButton.setObjectName("addBankAccButton")
         self.horizontalLayout_4.addWidget(self.addBankAccButton)
-        self.delBankAccButton = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.delBankAccButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.delBankAccButton.setStyleSheet("QPushButton {\n"
 "font: 11pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
@@ -54,7 +56,7 @@ class MyMainWindow(QWidget):
 "}")
         self.delBankAccButton.setObjectName("delBankAccButton")
         self.horizontalLayout_4.addWidget(self.delBankAccButton)
-        self.label_22 = QtWidgets.QLabel(parent=MyMainWindow)
+        self.label_22 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_22.setStyleSheet("color: rgb(255, 255, 255);\n"
 "font: 75 14pt \"MS Shell Dlg 2\";\n"
 "background-color: none;\n"
@@ -62,7 +64,7 @@ class MyMainWindow(QWidget):
         self.label_22.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_22.setObjectName("label_22")
         self.horizontalLayout_4.addWidget(self.label_22)
-        self.changePersonComboBox = QtWidgets.QComboBox(parent=MyMainWindow)
+        self.changePersonComboBox = QtWidgets.QComboBox(parent=self.centralwidget)
         self.changePersonComboBox.setStyleSheet("\n"
 "QComboBox {\n"
 "color: rgb(255, 255, 255);\n"
@@ -74,10 +76,8 @@ class MyMainWindow(QWidget):
 "")
         self.changePersonComboBox.setObjectName("changePersonComboBox")
         self.changePersonComboBox.addItem("")
-        self.changePersonComboBox.addItem("")
-        self.changePersonComboBox.addItem("")
         self.horizontalLayout_4.addWidget(self.changePersonComboBox)
-        self.infoBankAccButton = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.infoBankAccButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.infoBankAccButton.setStyleSheet("QPushButton {\n"
 "font: 11pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
@@ -97,7 +97,7 @@ class MyMainWindow(QWidget):
         self.infoBankAccButton.setObjectName("infoBankAccButton")
         self.horizontalLayout_4.addWidget(self.infoBankAccButton)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
-        self.balance_category_frame = QtWidgets.QFrame(parent=MyMainWindow)
+        self.balance_category_frame = QtWidgets.QFrame(parent=self.centralwidget)
         self.balance_category_frame.setStyleSheet("background-color: rgba(255, 255, 255, 30);\n"
 "border: 1px solid rgba(255, 255, 255, 40);\n"
 "border-radius: 7px;\n"
@@ -465,7 +465,7 @@ class MyMainWindow(QWidget):
         self.verticalLayout_3.addWidget(self.balance_category_frame)
         self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_10.setObjectName("horizontalLayout_10")
-        self.newTransactionButton = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.newTransactionButton = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(11)
@@ -495,7 +495,7 @@ class MyMainWindow(QWidget):
         self.newTransactionButton.setIconSize(QtCore.QSize(20, 20))
         self.newTransactionButton.setObjectName("newTransactionButton")
         self.horizontalLayout_10.addWidget(self.newTransactionButton)
-        self.newTransactionButton_2 = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.newTransactionButton_2 = QtWidgets.QPushButton(parent=self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(11)
@@ -523,7 +523,7 @@ class MyMainWindow(QWidget):
         self.newTransactionButton_2.setIconSize(QtCore.QSize(20, 20))
         self.newTransactionButton_2.setObjectName("newTransactionButton_2")
         self.horizontalLayout_10.addWidget(self.newTransactionButton_2)
-        self.label_23 = QtWidgets.QLabel(parent=MyMainWindow)
+        self.label_23 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_23.setStyleSheet("color: rgb(255, 255, 255);\n"
 "font: 75 14pt \"MS Shell Dlg 2\";\n"
 "background-color: none;\n"
@@ -531,7 +531,7 @@ class MyMainWindow(QWidget):
         self.label_23.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight|QtCore.Qt.AlignmentFlag.AlignTrailing|QtCore.Qt.AlignmentFlag.AlignVCenter)
         self.label_23.setObjectName("label_23")
         self.horizontalLayout_10.addWidget(self.label_23)
-        self.sortComboBox = QtWidgets.QComboBox(parent=MyMainWindow)
+        self.sortComboBox = QtWidgets.QComboBox(parent=self.centralwidget)
         self.sortComboBox.setStyleSheet("\n"
 "QComboBox {\n"
 "color: rgb(255, 255, 255);\n"
@@ -548,7 +548,7 @@ class MyMainWindow(QWidget):
         self.sortComboBox.addItem("")
         self.sortComboBox.addItem("")
         self.horizontalLayout_10.addWidget(self.sortComboBox)
-        self.deleteButton = QtWidgets.QPushButton(parent=MyMainWindow)
+        self.deleteButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.deleteButton.setStyleSheet("QPushButton {\n"
 "font: 11pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
@@ -572,15 +572,15 @@ class MyMainWindow(QWidget):
         self.deleteButton.setObjectName("deleteButton")
         self.horizontalLayout_10.addWidget(self.deleteButton)
         self.verticalLayout_3.addLayout(self.horizontalLayout_10)
-        self.tableView = QtWidgets.QTableView(parent=MyMainWindow)
-        self.tableView.setStyleSheet("QTableView {\n"
+        self.tableWidget = QtWidgets.QTableWidget(parent=self.centralwidget)
+        self.tableWidget.setStyleSheet("QTableWidget {\n"
 "background-color: rgba(255, 255, 255, 30);\n"
 "border: 1px solid rgba(255, 255, 255, 40);\n"
 "border-bottom-left-radius: 7px;\n"
 "border-bottom-right-radius: 7px;\n"
 "}\n"
 "\n"
-"QTableView::section{\n"
+"QTableWidget::section{\n"
 "background-color: rgba(53,53,53);\n"
 "color: rgb(255, 255, 255);\n"
 "border: none;\n"
@@ -588,85 +588,76 @@ class MyMainWindow(QWidget):
 "font: 14pt \"MS Shell Dlg 2\";\n"
 "}\n"
 "\n"
-"QTableView::item{\n"
+"QTableWidget::item{\n"
 "border-style: none;\n"
 "border-bottom: rgba(255, 255, 255, 50);\n"
 "}\n"
 "\n"
-"QTableView::item:selected{\n"
+"QTableWidget::item:selected{\n"
 "border: none;\n"
 "color: rgb(255, 255, 255);\n"
 "background-color: rgba(255, 255, 255, 50);\n"
 "}\n"
 "\n"
 "")
-        self.tableView.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.tableView.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
-        self.tableView.setShowGrid(False)
-        self.tableView.setObjectName("tableView")
-        self.tableView.horizontalHeader().setDefaultSectionSize(135)
-        self.verticalLayout_3.addWidget(self.tableView)
+        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setRowCount(0)
+        self.verticalLayout_3.addWidget(self.tableWidget)
+        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MyMainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MyMainWindow)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MyMainWindow):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MyMainWindow.setWindowTitle(_translate("MyMainWindow", "WalletWise: Family Finance Tracker"))
-        self.addBankAccButton.setText(_translate("MyMainWindow", "Добавить счет"))
-        self.delBankAccButton.setText(_translate("MyMainWindow", "Удалить данный счет"))
-        self.label_22.setText(_translate("MyMainWindow", "Владелец текущего счета:"))
-
-
-        """
-        вместо этих строк сюда должны выводится данные из бд, то есть логины счетов
-        self.changePersonComboBox.setItemText(0, _translate("MyMainWindow", "Отец"))
-        self.changePersonComboBox.setItemText(1, _translate("MyMainWindow", "Мать"))
-        self.changePersonComboBox.setItemText(2, _translate("MyMainWindow", "Ребенок/Дети"))"""
-
-
-        self.infoBankAccButton.setText(_translate("MyMainWindow", "Информация о текущем счете"))
-        self.currentBalance.setText(_translate("MyMainWindow", "Текущий баланс"))
-        self.moneyCurrentBalance.setText(_translate("MyMainWindow", "1221 рублей"))
-        self.earn.setText(_translate("MyMainWindow", "Поступления"))
-        self.earnBalance.setText(_translate("MyMainWindow", "12321 рублей"))
-        self.spend.setText(_translate("MyMainWindow", "Расходы"))
-        self.spendBalance.setText(_translate("MyMainWindow", "23 рублей"))
-        self.label_8.setText(_translate("MyMainWindow", "Расходы по категориям"))
-        self.label_11.setText(_translate("MyMainWindow", "Здоровье"))
-        self.healthMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_15.setText(_translate("MyMainWindow", "Еда"))
-        self.foodMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_18.setText(_translate("MyMainWindow", "Развлечения"))
-        self.funMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_27.setText(_translate("MyMainWindow", "Подарки"))
-        self.giftSpendMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_21.setText(_translate("MyMainWindow", "Другое"))
-        self.otherSpendMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_55.setText(_translate("MyMainWindow", "Доходы по категориям"))
-        self.label_60.setText(_translate("MyMainWindow", "Работа"))
-        self.jobMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_63.setText(_translate("MyMainWindow", "Акции, вклады, облигации"))
-        self.bankMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_69.setText(_translate("MyMainWindow", "Подарки"))
-        self.giftEarnMoney.setText(_translate("MyMainWindow", "money"))
-        self.label_24.setText(_translate("MyMainWindow", "Другое"))
-        self.otherEarnMoney.setText(_translate("MyMainWindow", "money"))
-        self.newTransactionButton.setText(_translate("MyMainWindow", "Добавить доход"))
-        self.newTransactionButton_2.setText(_translate("MyMainWindow", "Добавить расход"))
-        self.label_23.setText(_translate("MyMainWindow", "Cортировать по:"))
-        self.sortComboBox.setItemText(0, _translate("MyMainWindow", "Сумме поступления"))
-        self.sortComboBox.setItemText(1, _translate("MyMainWindow", "Сумме вычета"))
-        self.sortComboBox.setItemText(2, _translate("MyMainWindow", "Категории"))
-        self.sortComboBox.setItemText(3, _translate("MyMainWindow", "Дате (снач. старые)"))
-        self.sortComboBox.setItemText(4, _translate("MyMainWindow", "Дате (снач. новые)"))
-        self.deleteButton.setText(_translate("MyMainWindow", "Удалить транзакцию"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "WalletWise: Family Finance Tracker"))
+        self.addBankAccButton.setText(_translate("MainWindow", "Добавить счет"))
+        self.delBankAccButton.setText(_translate("MainWindow", "Удалить счет"))
+        self.label_22.setText(_translate("MainWindow", "Владелец текущего счета:"))
+        self.changePersonComboBox.setItemText(0, _translate("MainWindow", "New Item"))
+        self.infoBankAccButton.setText(_translate("MainWindow", "Информация о текущем счете"))
+        self.currentBalance.setText(_translate("MainWindow", "Текущий баланс"))
+        self.moneyCurrentBalance.setText(_translate("MainWindow", "1221 рублей"))
+        self.earn.setText(_translate("MainWindow", "Поступления"))
+        self.earnBalance.setText(_translate("MainWindow", "12321 рублей"))
+        self.spend.setText(_translate("MainWindow", "Расходы"))
+        self.spendBalance.setText(_translate("MainWindow", "23 рублей"))
+        self.label_8.setText(_translate("MainWindow", "Расходы по категориям"))
+        self.label_11.setText(_translate("MainWindow", "Здоровье"))
+        self.healthMoney.setText(_translate("MainWindow", "money"))
+        self.label_15.setText(_translate("MainWindow", "Еда"))
+        self.foodMoney.setText(_translate("MainWindow", "money"))
+        self.label_18.setText(_translate("MainWindow", "Развлечения"))
+        self.funMoney.setText(_translate("MainWindow", "money"))
+        self.label_27.setText(_translate("MainWindow", "Подарки"))
+        self.giftSpendMoney.setText(_translate("MainWindow", "money"))
+        self.label_21.setText(_translate("MainWindow", "Другое"))
+        self.otherSpendMoney.setText(_translate("MainWindow", "money"))
+        self.label_55.setText(_translate("MainWindow", "Доходы по категориям"))
+        self.label_60.setText(_translate("MainWindow", "Работа"))
+        self.jobMoney.setText(_translate("MainWindow", "money"))
+        self.label_63.setText(_translate("MainWindow", "Акции, вклады, облигации"))
+        self.bankMoney.setText(_translate("MainWindow", "money"))
+        self.label_69.setText(_translate("MainWindow", "Подарки"))
+        self.giftEarnMoney.setText(_translate("MainWindow", "money"))
+        self.label_24.setText(_translate("MainWindow", "Другое"))
+        self.otherEarnMoney.setText(_translate("MainWindow", "money"))
+        self.newTransactionButton.setText(_translate("MainWindow", "Добавить доход"))
+        self.newTransactionButton_2.setText(_translate("MainWindow", "Добавить расход"))
+        self.label_23.setText(_translate("MainWindow", "Cортировать по:"))
+        self.sortComboBox.setItemText(0, _translate("MainWindow", "Сумме поступления"))
+        self.sortComboBox.setItemText(1, _translate("MainWindow", "Сумме вычета"))
+        self.sortComboBox.setItemText(2, _translate("MainWindow", "Категории"))
+        self.sortComboBox.setItemText(3, _translate("MainWindow", "Дате (снач. старые)"))
+        self.sortComboBox.setItemText(4, _translate("MainWindow", "Дате (снач. новые)"))
+        self.deleteButton.setText(_translate("MainWindow", "Удалить транзакцию"))
 
 
         self.addBankAccButton.clicked.connect(self.add_bank)
 
     def add_bank(self):
-        from NewBankAcc import BankAccDialog
+        from NewBankAcc import BankAccWin
         self.hide()
-        self.addBank = BankAccDialog()
+        self.addBank = BankAccWin()
         self.addBank.show()

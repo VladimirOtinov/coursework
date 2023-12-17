@@ -1,26 +1,19 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QMainWindow, QApplication
+from PyQt6.QtWidgets import QWidget
 
 from database import DatabaseManager
 
 
-class StartWindow(QMainWindow):
+class StartWindow(QWidget):
     def __init__(self):
-        super(StartWindow, self).__init__()
+        super().__init__()
 
         # Создайте объект DatabaseManager в конструкторе
         self.db_manager = DatabaseManager("budget.db")
 
-        self.setupUi(self)
+        self.resize(453, 190)
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()
-    def setupUi(self, startWindow):
-        startWindow.resize(453, 225)
-
-        self.centralwidget = QtWidgets.QWidget(parent=startWindow)
+        self.centralwidget = QtWidgets.QWidget(parent=self)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.centralwidget)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -65,14 +58,12 @@ class StartWindow(QMainWindow):
         self.startButton.setObjectName("startButton")
         self.verticalLayout_2.addWidget(self.startButton)
         self.verticalLayout.addWidget(self.frame)
-        startWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(startWindow)
-        QtCore.QMetaObject.connectSlotsByName(startWindow)
 
-    def retranslateUi(self, startWindow):
+        QtCore.QMetaObject.connectSlotsByName(self)
+
         _translate = QtCore.QCoreApplication.translate
-        startWindow.setWindowTitle(_translate("startWindow", "WalletWise: Family Finance Tracker"))
+        self.setWindowTitle(_translate("startWindow", "WalletWise: Family Finance Tracker"))
         self.nameLabel.setText(_translate("startWindow", "Добро пожаловать в WalletWise"))
         self.descripLabel.setText(_translate("startWindow", "WalletWise: Family Finance Tracker — это приложение \n"
 "для простого учета доходов и расходов всех членов \n"
@@ -87,19 +78,18 @@ class StartWindow(QMainWindow):
 
 
     def open_reg(self):
-        from RegWindow import RegDialog
+        from RegWindow import RegWindow
         self.close()
-        self.dlg = RegDialog()
+        self.dlg = RegWindow()
         self.dlg.show()
 
     def open_log(self):
-        from AuthWindow import AuthDialog
+        from AuthWindow import AuthWindow
         self.close()
-        self.dlg = AuthDialog()
+        self.dlg = AuthWindow()
         self.dlg.show()
 
-    def open_reg_or_log(self):
-        from RegOrLogWindow import RegLogWindow
-        self.close()
-        self.dlg = RegLogWindow()
-        self.dlg.show()
+    def closeEvent(self, event):
+        # Закрываем соединение с базой данных при закрытии окна
+        self.db_manager.close_connection()
+        event.accept()

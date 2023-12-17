@@ -1,13 +1,14 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtWidgets import QWidget
 from database import DatabaseManager
 
-class RegDialog(QDialog):
+
+class RegWindow(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.bank_acc_dialog = None
         self.db_manager = DatabaseManager("budget.db")
-
 
         # Устанавливаем размеры и стили диалогового окна
         self.setObjectName("regDialog")
@@ -177,7 +178,7 @@ class RegDialog(QDialog):
         self.pushButton.clicked.connect(self.reg_log)
 
     def reg_log(self):
-        from NewBankAcc import BankAccDialog
+        from NewBankAcc import BankAccWin
         from message_box import MessageBox
 
         # Проверяем, что все поля заполнены
@@ -205,8 +206,8 @@ class RegDialog(QDialog):
             self.close()
 
             # Открываем окно добавления банковского счета после успешной регистрации
-            bank_acc_dialog = BankAccDialog(is_registration=True)
-            bank_acc_dialog.exec()
+            self.bank_acc_dialog = BankAccWin(is_registration=True)
+            self.bank_acc_dialog.show()
         else:
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Не удалось зарегистрировать семью.", MessageBox.Icon.Critical)

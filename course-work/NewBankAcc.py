@@ -1,10 +1,11 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QWidget
 from database import DatabaseManager
 
-class BankAccDialog(QDialog):
+class BankAccWin(QWidget):
     def __init__(self, is_registration=False, user_id=None):
-        super(BankAccDialog, self).__init__()
+        super(BankAccWin, self).__init__()
+        self.main_win = None
         self.db_manager = DatabaseManager("budget.db")
         self.is_registration = is_registration
         self.user_id = 1
@@ -132,7 +133,7 @@ class BankAccDialog(QDialog):
 
     def save_family_member_account(self):
         from message_box import MessageBox
-        from MainWindow import MyMainWindow
+        from MainWindow import MainWindow
         # Получаем данные из полей ввода
         account_name = self.bankAccLine.text().strip()
         account_info = self.bankAccLine_2.text().strip()
@@ -147,18 +148,22 @@ class BankAccDialog(QDialog):
         # Добавляем счет в базу данных
         success = self.db_manager.add_bank_account(account_name, account_info, initial_balance, self.user_id)
 
-        # Проверяем результат операции
-        if success:
-            msg = MessageBox(self)
-            msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
-            self.hide()
-            self.main_win = MyMainWindow()
-            self.main_win.show()
-        else:
-            error_msg = MessageBox(self)
-            error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
+        self.main_win = MainWindow()
+        self.main_win.show()
+
+
+
+       ## Проверяем результат операции
+       #if success:
+       #    #msg = MessageBox(self)
+       #    #msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
+       #    print("Успех", "Счет успешно добавлен.")
+
+       #else:
+       #    error_msg = MessageBox(self)
+       #    error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
     def back_click(self):
-        from MainWindow import MyMainWindow
+        from MainWindow import MainWindow
         self.close()
-        self.main_win = MyMainWindow()
+        self.main_win = MainWindow()
         self.main_win.show()
