@@ -614,7 +614,7 @@ class MyMainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MyMainWindow.setWindowTitle(_translate("MyMainWindow", "WalletWise: Family Finance Tracker"))
         self.addBankAccButton.setText(_translate("MyMainWindow", "Добавить счет"))
-        self.delBankAccButton.setText(_translate("MyMainWindow", "Удалить счет"))
+        self.delBankAccButton.setText(_translate("MyMainWindow", "Удалить данный счет"))
         self.label_22.setText(_translate("MyMainWindow", "Владелец текущего счета:"))
 
 

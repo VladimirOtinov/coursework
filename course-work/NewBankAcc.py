@@ -127,11 +127,12 @@ class BankAccDialog(QDialog):
         self.cancelButton.setText(_translate("bankAccDialog", "Отмена"))
         self.saveButton.setText(_translate("bankAccDialog", "Сохранить"))
 
+        self.cancelButton.clicked.connect(self.back_click)
         self.saveButton.clicked.connect(self.save_family_member_account)
 
     def save_family_member_account(self):
         from message_box import MessageBox
-        from AuthWindow import AuthDialog
+        from MainWindow import MyMainWindow
         # Получаем данные из полей ввода
         account_name = self.bankAccLine.text().strip()
         account_info = self.bankAccLine_2.text().strip()
@@ -150,10 +151,14 @@ class BankAccDialog(QDialog):
         if success:
             msg = MessageBox(self)
             msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
-
-            # Открываем новое окно с текущим окном в качестве родителя
-            self.auth = AuthDialog(parent=self)
-            self.auth.show()
+            self.hide()
+            self.main_win = MyMainWindow()
+            self.main_win.show()
         else:
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
+    def back_click(self):
+        from MainWindow import MyMainWindow
+        self.close()
+        self.main_win = MyMainWindow()
+        self.main_win.show()
