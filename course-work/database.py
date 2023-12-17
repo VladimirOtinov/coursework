@@ -20,7 +20,7 @@ class DatabaseManager:
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS bank_accounts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                bank_acc_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 account_info TEXT,
                 money REAL NOT NULL,
@@ -37,7 +37,7 @@ class DatabaseManager:
                 info TEXT,
                 category TEXT,
                 bank_acc_id INTEGER,
-                FOREIGN KEY (bank_acc_id) REFERENCES Bank_account(bank_acc_id)
+                FOREIGN KEY (bank_acc_id) REFERENCES bank_accounts(bank_acc_id)
             )
         ''')
 
@@ -49,7 +49,7 @@ class DatabaseManager:
                 info TEXT,
                 category TEXT,
                 bank_acc_id INTEGER,
-                FOREIGN KEY (bank_acc_id) REFERENCES Bank_account(bank_acc_id)
+                FOREIGN KEY (bank_acc_id) REFERENCES bank_accounts(bank_acc_id)
             )
         ''')
 
@@ -159,3 +159,14 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print("Ошибка при добавлении счета:", e)
             return False
+
+    def get_accounts(self):
+        try:
+            self.cursor.execute('''
+                SELECT id, name FROM bank_accounts
+            ''')
+            accounts = self.cursor.fetchall()
+            return accounts
+        except sqlite3.Error as e:
+            print("Ошибка при получении списка счетов:", e)
+            return None
