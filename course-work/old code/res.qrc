@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>icons/add.svg</file>
+    <file>icons/bank.svg</file>
+    <file>icons/delete.svg</file>
+    <file>icons/edit.svg</file>
+    <file>icons/enjoy.svg</file>
+    <file>icons/food.svg</file>
+    <file>icons/gift.svg</file>
+    <file>icons/health.svg</file>
+    <file>icons/income.svg</file>
+    <file>icons/other.svg</file>
+    <file>icons/outcome.svg</file>
+    <file>icons/work.svg</file>
+  </qresource>
+</RCC>
