@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>bankAccDialog</class>
+ <widget class="QDialog" name="bankAccDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>267</width>
+    <height>247</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>WalletWise: Family Finance Tracker</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 216), stop:1 rgba(179, 0, 241, 216));
+font: 10pt &quot;Bahnschrift SemiLight&quot;;
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 75 16pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;
+font-weight: bold;
+</string>
+     </property>
+     <property name="text">
+      <string>Заполнение данных 
+о счете</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 30);
+border: 1px solid rgba(255, 255, 255, 40);
+border-radius: 7px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLineEdit" name="bankAccLine">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Название счета</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="bankAccLine_2">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Краткое описание</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+background-color:none;
+border: none;
+font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
+        <property name="text">
+         <string>Введите остаток на счете</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="moneySpinBox">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color: white;
+padding-left:10px;</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::PlusMinus</enum>
+        </property>
+        <property name="specialValueText">
+         <string/>
+        </property>
+        <property name="maximum">
+         <double>9999999999999900.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>100.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1000.000000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+font: 75 12pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 50);
+border: 1px solid rgba(255, 255, 255, 60);
+border-radius: 7px;
+}
+QPushButton:hover{
+background-color: rgba(255, 255, 255, 60);
+}
+
+QPushButton:pressed{
+background-color: rgba(255, 255, 255, 80);
+}</string>
+       </property>
+       <property name="text">
+        <string>Отмена</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="saveButton">
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+font: 75 12pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 50);
+border: 1px solid rgba(255, 255, 255, 60);
+border-radius: 7px;
+}
+QPushButton:hover{
+background-color: rgba(255, 255, 255, 60);
+}
+
+QPushButton:pressed{
+background-color: rgba(255, 255, 255, 80);
+}</string>
+       </property>
+       <property name="text">
+        <string>Сохранить</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>bankAccLine</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

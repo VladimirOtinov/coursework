@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>regDialog</class>
+ <widget class="QDialog" name="regDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>554</width>
+    <height>452</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>WalletWise: Family Finance Tracker</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 216), stop:1 rgba(179, 0, 241, 216));
+font: 10pt &quot;Bahnschrift SemiLight&quot;;
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="label_8">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);
+font: 75 24pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;
+font-weight: bold;
+</string>
+     </property>
+     <property name="text">
+      <string>Создание аккаунта члена семьи</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="passwordFrame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 30);
+border: 1px solid rgba(255, 255, 255, 40);
+border-radius: 7px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+font: 75 20pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Данные для авторизации</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_5">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Введите имя (Логин)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_4">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Придумайте и введите пароль</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit_3">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Введите пароль повторно</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="remembPassFrame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 30);
+border: 1px solid rgba(255, 255, 255, 40);
+border-radius: 7px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+font: 75 20pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;</string>
+        </property>
+        <property name="text">
+         <string>Восстановление пароля</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="frame_2">
+        <property name="frameShape">
+         <enum>QFrame::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_6">
+           <property name="styleSheet">
+            <string notr="true">color: rgb(255, 255, 255);
+font: 75 12pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;</string>
+           </property>
+           <property name="text">
+            <string>Придумайте вопрос и ответ на него 
+(будет использоваться для напоминания пароля)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit">
+           <property name="styleSheet">
+            <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+           </property>
+           <property name="placeholderText">
+            <string>Вопрос</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_2">
+           <property name="styleSheet">
+            <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+           </property>
+           <property name="placeholderText">
+            <string>Ответ на ваш вопрос</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton">
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+font: 11pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 50);
+border: 1px solid rgba(255, 255, 255, 60);
+border-radius: 7px;
+width: 230px;
+height: 30px;
+}
+QPushButton:hover{
+background-color: rgba(255, 255, 255, 60);
+}
+
+QPushButton:pressed{
+background-color: rgba(255, 255, 255, 80);
+}</string>
+     </property>
+     <property name="text">
+      <string>Сохранить</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

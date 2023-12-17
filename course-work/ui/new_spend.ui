@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>403</width>
+    <height>293</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WalletWise: Family Finance Tracker</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 216), stop:1 rgba(179, 0, 241, 216));
+font: 10pt &quot;Bahnschrift SemiLight&quot;;
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgba(255, 255, 255, 30);
+border: 1px solid rgba(255, 255, 255, 40);
+border-radius: 7px;</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QLabel" name="transaction_label">
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+font: 75 20pt &quot;MS Shell Dlg 2&quot;;
+background-color: none;
+border: none;
+font-weight: bold;
+</string>
+        </property>
+        <property name="text">
+         <string>Новая транзакция</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="categoryComboBox">
+        <property name="styleSheet">
+         <string notr="true">QComboBox{
+font-size: 16pt;
+color: white;
+}
+
+QComboBox::item{
+color: black;
+}</string>
+        </property>
+        <property name="editable">
+         <bool>false</bool>
+        </property>
+        <property name="currentText">
+         <string>Выберите категорию</string>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <property name="duplicatesEnabled">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>Выберите категорию</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Здоровье</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Еда</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Развлечения</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Подарки</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Другое</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color: white;
+padding-left:10px;</string>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="date">
+         <date>
+          <year>2023</year>
+          <month>1</month>
+          <day>1</day>
+         </date>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="descriptionLine">
+        <property name="styleSheet">
+         <string notr="true">font-size: 16pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Описание</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="money_sumLine">
+        <property name="styleSheet">
+         <string notr="true">font-size: 15pt;
+color:rgb(255, 255, 255);
+padding-left: 10px;</string>
+        </property>
+        <property name="placeholderText">
+         <string>Введите сумму транзакции, до сотых</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="save_pushButton">
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+font: 75 12pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(255, 255, 255);
+background-color: rgba(255, 255, 255, 50);
+border: 1px solid rgba(255, 255, 255, 60);
+border-radius: 7px;
+width: 230px;
+height: 30px;
+}
+QPushButton:hover{
+background-color: rgba(255, 255, 255, 60);
+}
+
+QPushButton:pressed{
+background-color: rgba(255, 255, 255, 80);
+}</string>
+        </property>
+        <property name="text">
+         <string>Сохранить Транзанкцию</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections/>
+</ui>
