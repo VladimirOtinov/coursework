@@ -2,12 +2,12 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QDialog
 from database import DatabaseManager
 
-
-class BankAccDialog(QtWidgets.QDialog):
-    def __init__(self, is_registration=False):
+class BankAccDialog(QDialog):
+    def __init__(self, is_registration=False, user_id=None):
         super(BankAccDialog, self).__init__()
-        self.db_manager = DatabaseManager("budget.db")  # Создаем объект базы данных
+        self.db_manager = DatabaseManager("budget.db")
         self.is_registration = is_registration
+        self.user_id = 1
         self.setupUi(self)
 
     def setupUi(self, bankAccDialog):
@@ -129,35 +129,27 @@ class BankAccDialog(QtWidgets.QDialog):
 
         self.saveButton.clicked.connect(self.save_family_member_account)
 
-
     def save_family_member_account(self):
-        # Получаем данные из интерфейса
-        name = self.bankAccLine.text()
-        account_info = self.bankAccLine_2.text()
-        money = self.moneySpinBox.value()
+        from AuthWindow import AuthDialog
+        # Получаем данные из полей ввода
+        account_name = self.bankAccLine.text().strip()
+        account_info = self.bankAccLine_2.text().strip()
+        initial_balance = self.moneySpinBox.value()
 
-        # В методе save_family_member_account
-        user_id = self.get_current_user_id()
+        # Проверяем, что все необходимые данные введены
+        if not account_name or not account_info:
+            QtWidgets.QMessageBox.warning(self, "Предупреждение", "Заполните все поля.")
+            return
 
-        # Проверяем, что удалось получить корректный user_id
-        if user_id is not None:
-            # Добавляем счет члена семьи в базу данных
-            if self.db_manager.add_family_member_account(name, account_info, money, user_id):
-                print("Счет успешно сохранен.")
+        # Добавляем счет в базу данных
+        success = self.db_manager.add_bank_account(account_name, account_info, initial_balance, self.user_id)
 
-                # Закрываем текущее окно после сохранения
-                self.close()
+        # Проверяем результат операции
+        if success:
+            QtWidgets.QMessageBox.information(self, "Успех", "Счет успешно добавлен.")
 
-                # Если окно было открыто из окна регистрации, возвращаемся в главное окно
-                if self.is_registration:
-                    self.show_main_window()
-            else:
-                print("Не удалось сохранить счет.")
+            # Открываем новое окно с текущим окном в качестве родителя
+            self.auth = AuthDialog(parent=self)
+            self.auth.show()
         else:
-            print("Не удалось получить ID текущего пользователя.")
-
-    def show_main_window(self):
-        # Открываем главное окно (MyMainWindow)
-        from MainWindow import MyMainWindow
-        main_window = MyMainWindow()
-        main_window.show()
+            QtWidgets.QMessageBox.warning(self, "Ошибка", "Не удалось добавить счет. Попробуйте еще раз.")

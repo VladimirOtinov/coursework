@@ -147,16 +147,15 @@ class DatabaseManager:
             print("Ошибка при изменении пароля:", e)
             return False
 
-    def add_family_member_account(self, name, account_info, money, id):
+    def add_bank_account(self, name, account_info, money, user_id):
         try:
-            # Вставляем данные о счете в базу данных
             self.cursor.execute('''
-                INSERT INTO bank_accounts (name, account_info, money, id, user_id)
-                VALUES (?, ?, ?, ?, 1)
-            ''', (name, account_info, money, id))
-
+                INSERT INTO bank_accounts (name, account_info, money, user_id)
+                VALUES (?, ?, ?, ?)
+            ''', (name, account_info, money, user_id))
             self.connection.commit()
+            print("Счет успешно добавлен.")
             return True
-        except Exception as e:
-            print(f"Ошибка добавления счета члена семьи: {e}")
+        except sqlite3.Error as e:
+            print("Ошибка при добавлении счета:", e)
             return False
