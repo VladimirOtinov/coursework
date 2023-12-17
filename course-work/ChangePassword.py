@@ -10,6 +10,7 @@ class ForgotPassDialog(QDialog):
         # Создаем элементы интерфейса
         self.db_manager = DatabaseManager("budget.db")
         self.setupUi(self)
+        self.load_security_question()
 
     def setupUi(self, forgotPassDialog):
         forgotPassDialog.setObjectName("forgotPassDialog")
@@ -154,8 +155,66 @@ class ForgotPassDialog(QDialog):
         self.dlg = AuthDialog()
         self.dlg.exec()
 
+    def load_security_question(self):
+        # Получаем кодовый вопрос из базы данных и выводим его в label
+        security_question = self.db_manager.get_security_question()
+        if security_question:
+            self.label.setText(security_question)
+        else:
+            self.label.setText("Не удалось загрузить вопрос")
+
+
     def save_password(self):
         from AuthWindow import AuthDialog
-        self.close()
-        self.dlg = AuthDialog()
-        self.dlg.exec()
+        from message_box import MessageBox
+
+        # Получаем кодовый ответ из базы данных
+        correct_answer = self.db_manager.get_security_answer()
+
+        # Проверяем, совпадает ли введенный ответ с сохраненным в базе данных
+        entered_answer = self.lineEdit.text()
+        if not entered_answer:
+            # Отображаем сообщение о том, что поле с ответом на вопрос не заполнено
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Пожалуйста, введите ответ на кодовый вопрос.", MessageBox.Icon.Critical)
+            return
+
+        if entered_answer == correct_answer:
+            new_password = self.lineEdit_2.text()
+            confirm_password = self.lineEdit_3.text()
+
+            # Проверяем, что все поля нового пароля заполнены
+            if not new_password or not confirm_password:
+                # Отображаем сообщение о том, что не все поля заполнены
+                error_msg = MessageBox(self)
+                error_msg.show_message("Ошибка", "Пожалуйста, заполните все поля для изменения пароля.",
+                                       MessageBox.Icon.Critical)
+                return
+
+            # Проверяем, что новый пароль и его подтверждение совпадают
+            if new_password == confirm_password:
+                # Сохраняем новый пароль в базе данных
+                user_id = 1  # Идентификатор пользователя
+                success = self.db_manager.change_password_by_id(user_id, new_password)
+
+                if success:
+                    # Отображаем успешное сообщение
+                    success_msg = MessageBox(self)
+                    success_msg.show_message("Успех", "Пароль успешно изменен.", MessageBox.Icon.Information)
+                    self.close()
+
+                    # Открываем окно авторизации
+                    self.dlg = AuthDialog()
+                    self.dlg.show()
+                else:
+                    # Отображаем сообщение об ошибке
+                    error_msg = MessageBox(self)
+                    error_msg.show_message("Ошибка", "Не удалось изменить пароль.", MessageBox.Icon.Critical)
+            else:
+                # Отображаем сообщение о несовпадении паролей
+                error_msg = MessageBox(self)
+                error_msg.show_message("Ошибка", "Новый пароль и подтверждение не совпадают.", MessageBox.Icon.Critical)
+        else:
+            # Отображаем сообщение о неверном ответе на вопрос
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Неверный ответ на кодовый вопрос.", MessageBox.Icon.Critical)

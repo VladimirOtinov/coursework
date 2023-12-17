@@ -177,64 +177,20 @@ class RegDialog(QDialog):
         self.pushButton.clicked.connect(self.reg_log)
 
     def reg_log(self):
-        from AuthWindow import AuthDialog
+        from NewBankAcc import BankAccDialog
+        from message_box import MessageBox
 
         # Проверяем, что все поля заполнены
-        if any(field.text().strip() == "" for field in [self.lineEdit_5, self.lineEdit_4, self.lineEdit_3, self.lineEdit, self.lineEdit_2]):
-            msg = QMessageBox(self)
-            msg.setStyleSheet("QPushButton{\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "color: rgb(255, 255, 255);"
-                              "background-color: rgba(255, 255, 255, 50);\n"
-                              "border: 1px solid rgba(255, 255, 255, 60);\n"
-                              "border-radius:7px;\n"
-                              "width: 230;\n"
-                              "height: 30;\n"
-                              "}\n"
-                              "QPushButton:hover{\n"
-                              "background-color: rgba(255, 255, 255, 70);\n"
-                              "}\n"
-                              "QPushButton:pressed{\n"
-                              "background-color: rgba(255, 255, 255, 90);\n"
-                              "}"
-                              "QLabel{"
-                              "color: rgb(255, 255, 255);\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "background-color: none;\n"
-                              "border: none;\n"
-                              "font-weight: bold;};\n")
-            msg.setText("Пожалуйста, заполните все поля.")
-            msg.setWindowTitle("Ошибка")
-            msg.exec()
+        if any(field.text().strip() == "" for field in
+               [self.lineEdit_5, self.lineEdit_4, self.lineEdit_3, self.lineEdit, self.lineEdit_2]):
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Пожалуйста, заполните все поля.", MessageBox.Icon.Critical)
             return
 
         # Проверяем, что пароли совпадают
         if self.lineEdit_4.text() != self.lineEdit_3.text():
-            msg = QMessageBox(self)
-            msg.setStyleSheet("QPushButton{\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "color: rgb(255, 255, 255);"
-                              "background-color: rgba(255, 255, 255, 50);\n"
-                              "border: 1px solid rgba(255, 255, 255, 60);\n"
-                              "border-radius:7px;\n"
-                              "width: 230;\n"
-                              "height: 30;\n"
-                              "}\n"
-                              "QPushButton:hover{\n"
-                              "background-color: rgba(255, 255, 255, 70);\n"
-                              "}\n"
-                              "QPushButton:pressed{\n"
-                              "background-color: rgba(255, 255, 255, 90);\n"
-                              "}"
-                              "QLabel{"
-                              "color: rgb(255, 255, 255);\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "background-color: none;\n"
-                              "border: none;\n"
-                              "font-weight: bold;};\n")
-            msg.setText("Пароли не совпадают.")
-            msg.setWindowTitle("Ошибка")
-            msg.exec()
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Пароли не совпадают.", MessageBox.Icon.Critical)
             return
 
         # Сохраняем данные пользователя в базе данных
@@ -244,61 +200,16 @@ class RegDialog(QDialog):
         code_answer = self.lineEdit_2.text()
 
         if self.db_manager.add_user(login, password, code_question, code_answer):
-            msg = QMessageBox(self)
-            msg.setStyleSheet("QPushButton{\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "color: rgb(255, 255, 255);"
-                              "background-color: rgba(255, 255, 255, 50);\n"
-                              "border: 1px solid rgba(255, 255, 255, 60);\n"
-                              "border-radius:7px;\n"
-                              "width: 230;\n"
-                              "height: 30;\n"
-                              "}\n"
-                              "QPushButton:hover{\n"
-                              "background-color: rgba(255, 255, 255, 70);\n"
-                              "}\n"
-                              "QPushButton:pressed{\n"
-                              "background-color: rgba(255, 255, 255, 90);\n"
-                              "}"
-                              "QLabel{"
-                              "color: rgb(255, 255, 255);\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "background-color: none;\n"
-                              "border: none;\n"
-                              "font-weight: bold;};\n")
-            msg.setText("Семья успешно зарегистрирована.")
-            msg.setWindowTitle("Успех")
-            msg.exec()
+            success_msg = MessageBox(self)
+            success_msg.show_message("Успех", "Семья успешно зарегистрирована.", MessageBox.Icon.Information)
             self.close()
-            # Открываем окно авторизации
-            self.dlg = AuthDialog()
-            self.dlg.show()
+
+            # Открываем окно добавления банковского счета после успешной регистрации
+            bank_acc_dialog = BankAccDialog(is_registration=True)
+            bank_acc_dialog.exec()
         else:
-            msg = QMessageBox(self)
-            msg.setStyleSheet("QPushButton{\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "color: rgb(255, 255, 255);"
-                              "background-color: rgba(255, 255, 255, 50);\n"
-                              "border: 1px solid rgba(255, 255, 255, 60);\n"
-                              "border-radius:7px;\n"
-                              "width: 230;\n"
-                              "height: 30;\n"
-                              "}\n"
-                              "QPushButton:hover{\n"
-                              "background-color: rgba(255, 255, 255, 70);\n"
-                              "}\n"
-                              "QPushButton:pressed{\n"
-                              "background-color: rgba(255, 255, 255, 90);\n"
-                              "}"
-                              "QLabel{"
-                              "color: rgb(255, 255, 255);\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "background-color: none;\n"
-                              "border: none;\n"
-                              "font-weight: bold;};\n")
-            msg.setText("Не удалось зарегистрировать семью.")
-            msg.setWindowTitle("Ошибка")
-            msg.exec()
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Не удалось зарегистрировать семью.", MessageBox.Icon.Critical)
 
     def closeEvent(self, event):
         # Закрываем соединение с базой данных при закрытии окна

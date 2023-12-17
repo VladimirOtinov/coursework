@@ -4,7 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1cd70cd9-a1d2-48d5-ace0-e85d18876399" name="Changes" comment="" />
+    <list default="true" id="1cd70cd9-a1d2-48d5-ace0-e85d18876399" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/message_box.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuthWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/AuthWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ChangePassword.py" beforeDir="false" afterPath="$PROJECT_DIR$/ChangePassword.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NewBankAcc.py" beforeDir="false" afterPath="$PROJECT_DIR$/NewBankAcc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/RegWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/RegWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/budget.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/database.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +27,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/course-work" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -28,14 +37,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Vladimir/Desktop/GitHub"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Vladimir/Desktop/GitHub&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="course-work" />

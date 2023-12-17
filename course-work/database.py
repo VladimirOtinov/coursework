@@ -19,12 +19,12 @@ class DatabaseManager:
         ''')
 
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Bank_account (
-                bank_acc_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT,
+            CREATE TABLE IF NOT EXISTS bank_accounts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
                 account_info TEXT,
-                money REAL,
-                user_id INTEGER,
+                money REAL NOT NULL,
+                user_id INTEGER NOT NULL,
                 FOREIGN KEY (user_id) REFERENCES User(user_id)
             )
         ''')
@@ -99,27 +99,64 @@ class DatabaseManager:
             print("Ошибка при проверке наличия пользователя:", e)
             return False
 
-    def get_security_answer(self, id):
+    def get_security_question(self):
+        try:
+            self.cursor.execute('''
+                SELECT code_question FROM User
+                ORDER BY user_id ASC LIMIT 1
+            ''')
+            question = self.cursor.fetchone()
+
+            if question:
+                return question[0]
+            else:
+                print("Пользователь не найден.")
+                return None
+        except sqlite3.Error as e:
+            print("Ошибка при получении кодового вопроса:", e)
+            return None
+
+    def get_security_answer(self):
         try:
             self.cursor.execute('''
                 SELECT code_answer FROM User
-                WHERE login = ?
-            ''', (id))
-
+                ORDER BY user_id ASC LIMIT 1
+            ''')
             answer = self.cursor.fetchone()
-            return answer[0] if answer else None
 
+            if answer:
+                return answer[0]
+            else:
+                print("Пользователь не найден.")
+                return None
         except sqlite3.Error as e:
-            print("Ошибка при получении ответа на вопрос безопасности:", e)
+            print("Ошибка при получении кодового ответа:", e)
             return None
 
-    def get_security_question(self):
+    def change_password_by_id(self, user_id, new_password):
         try:
-            self.cursor.execute('SELECT code_question FROM User LIMIT 1')
-
-            question = self.cursor.fetchone()
-            return question[0] if question else "нет вопроса на данный момент"
-
+            self.cursor.execute('''
+                UPDATE User
+                SET password = ?
+                WHERE user_id = ?
+            ''', (new_password, user_id))
+            self.connection.commit()
+            print("Пароль успешно изменен.")
+            return True
         except sqlite3.Error as e:
-            print("Ошибка при получении первого вопроса безопасности:", e)
-            return "не найден вопрос"
+            print("Ошибка при изменении пароля:", e)
+            return False
+
+    def add_family_member_account(self, name, account_info, money, id):
+        try:
+            # Вставляем данные о счете в базу данных
+            self.cursor.execute('''
+                INSERT INTO bank_accounts (name, account_info, money, id, user_id)
+                VALUES (?, ?, ?, ?, 1)
+            ''', (name, account_info, money, id))
+
+            self.connection.commit()
+            return True
+        except Exception as e:
+            print(f"Ошибка добавления счета члена семьи: {e}")
+            return False

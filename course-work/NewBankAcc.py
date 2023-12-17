@@ -2,11 +2,14 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QDialog
 from database import DatabaseManager
 
-class BankAccDialog(QDialog):
-    def __init__(self):
+
+class BankAccDialog(QtWidgets.QDialog):
+    def __init__(self, is_registration=False):
         super(BankAccDialog, self).__init__()
         self.db_manager = DatabaseManager("budget.db")  # Создаем объект базы данных
+        self.is_registration = is_registration
         self.setupUi(self)
+
     def setupUi(self, bankAccDialog):
         bankAccDialog.setObjectName("bankAccDialog")
         bankAccDialog.resize(267, 247)
@@ -106,9 +109,12 @@ class BankAccDialog(QDialog):
         self.saveButton.setObjectName("saveButton")
         self.horizontalLayout.addWidget(self.saveButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
-
         self.retranslateUi(bankAccDialog)
         QtCore.QMetaObject.connectSlotsByName(bankAccDialog)
+
+        # Если окно открыто из регистрации, скрываем кнопку "Отмена"
+        if self.is_registration:
+            self.cancelButton.hide()
 
     def retranslateUi(self, bankAccDialog):
         _translate = QtCore.QCoreApplication.translate
@@ -116,10 +122,13 @@ class BankAccDialog(QDialog):
         self.label.setText(_translate("bankAccDialog", "Заполнение данных \n"
 "о счете"))
         self.bankAccLine.setPlaceholderText(_translate("bankAccDialog", "Название счета"))
-        self.bankAccLine_2.setPlaceholderText(_translate("bankAccDialog", "Краткое описание"))
+        self.bankAccLine_2.setPlaceholderText(_translate("bankAccDialog", "Введите описание счета"))
         self.label_2.setText(_translate("bankAccDialog", "Введите остаток на счете"))
         self.cancelButton.setText(_translate("bankAccDialog", "Отмена"))
         self.saveButton.setText(_translate("bankAccDialog", "Сохранить"))
+
+        self.saveButton.clicked.connect(self.save_family_member_account)
+
 
     def save_family_member_account(self):
         # Получаем данные из интерфейса
@@ -127,11 +136,28 @@ class BankAccDialog(QDialog):
         account_info = self.bankAccLine_2.text()
         money = self.moneySpinBox.value()
 
-        # Получаем ID текущего пользователя (предполагая, что у вас есть метод для этого)
+        # В методе save_family_member_account
         user_id = self.get_current_user_id()
 
-        # Добавляем счет члена семьи в базу данных
-        if self.db_manager.add_family_member_account(name, account_info, money, user_id):
-            print("Счет успешно сохранен.")
+        # Проверяем, что удалось получить корректный user_id
+        if user_id is not None:
+            # Добавляем счет члена семьи в базу данных
+            if self.db_manager.add_family_member_account(name, account_info, money, user_id):
+                print("Счет успешно сохранен.")
+
+                # Закрываем текущее окно после сохранения
+                self.close()
+
+                # Если окно было открыто из окна регистрации, возвращаемся в главное окно
+                if self.is_registration:
+                    self.show_main_window()
+            else:
+                print("Не удалось сохранить счет.")
         else:
-            print("Не удалось сохранить счет.")
+            print("Не удалось получить ID текущего пользователя.")
+
+    def show_main_window(self):
+        # Открываем главное окно (MyMainWindow)
+        from MainWindow import MyMainWindow
+        main_window = MyMainWindow()
+        main_window.show()

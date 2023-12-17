@@ -150,43 +150,26 @@ class AuthDialog(QDialog):
         self.forgotButton.clicked.connect(self.open_fpw)
 
     def open_main(self):
+        from message_box import MessageBox
         from MainWindow import MyMainWindow
         login_input = self.logLine.text()
         password_input = self.passLine.text()
 
         # Проверка учетных данных в базе данных
         if self.db_manager.check_credentials(login_input, password_input):
-
-            self.close()
+            # Открываем главное окно
             self.main_win = MyMainWindow()
             self.main_win.show()
+
+            # Закрываем соединение с базой данных после открытия главного окна
+            self.db_manager.close_connection()
+
+            # Закрываем окно авторизации
+            self.close()
         else:
             # Отображение сообщения об ошибке
-            msg = QMessageBox(self)
-            msg.setStyleSheet("QPushButton{\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "color: rgb(255, 255, 255);"
-                              "background-color: rgba(255, 255, 255, 50);\n"
-                              "border: 1px solid rgba(255, 255, 255, 60);\n"
-                              "border-radius:7px;\n"
-                              "width: 230;\n"
-                              "height: 30;\n"
-                              "}\n"
-                              "QPushButton:hover{\n"
-                              "background-color: rgba(255, 255, 255, 70);\n"
-                              "}\n"
-                              "QPushButton:pressed{\n"
-                              "background-color: rgba(255, 255, 255, 90);\n"
-                              "}"
-                              "QLabel{"
-                              "color: rgb(255, 255, 255);\n"
-                              "font: 75 12pt \"MS Shell Dlg 2\";\n"
-                              "background-color: none;\n"
-                              "border: none;\n"
-                              "font-weight: bold;};\n")
-            msg.setText("Неправильный логин или пароль")
-            msg.setWindowTitle("Ошибка")
-            msg.exec()
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Неправильный логин или пароль", MessageBox.Icon.Critical)
 
     def closeEvent(self, event):
         # Закрываем соединение с базой данных при закрытии окна
