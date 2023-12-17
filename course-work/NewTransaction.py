@@ -146,3 +146,4 @@ class NewTransaction(QWidget):
             category = self.categoryComboBox.currentText()
             bank_acc_id = self.acc_id
             self.db_manager.add_tr(cost, date, info, category, bank_acc_id, self.type_tr)
+            self.close()

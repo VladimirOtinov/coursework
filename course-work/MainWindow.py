@@ -610,21 +610,26 @@ class MainWindow(QMainWindow):
         self.verticalLayout_3.addLayout(self.horizontalLayout_10)
         self.tableWidget = QtWidgets.QTableWidget(parent=self.centralwidget)
         self.tableWidget.setStyleSheet("QTableWidget {\n"
-                                       "background-color: rgba(255, 255, 255, 30);\n"
-                                       "border: 2px solid rgba(255, 255, 255, 40);\n"
-                                       "border-bottom-left-radius: 7px;\n"
-                                       "border-bottom-right-radius: 7px;\n"
+                                       "    background-color: rgba(255, 255, 255, 30);\n"
+                                       "    border: none;\n"
+                                       "    border-bottom-left-radius: 7px;\n"
+                                       "    border-bottom-right-radius: 7px;\n"
                                        "}\n"
                                        "\n"
-                                       "QTableWidget:item{\n"
-                                       "border-style: none;\n"
-                                       "border-bottom: rgba(255, 255, 255, 50);\n"
+                                       "QTableWidget::corner {\n"
+                                       "    background-color: transparent;\n"
+                                       "    border: none;\n"
                                        "}\n"
                                        "\n"
-                                       "QTableWidget:item:selected{\n"
-                                       "border: none;\n"
-                                       "color: rgb(255, 255, 255);\n"
-                                       "background-color: rgba(255, 255, 255, 50);\n"
+                                       "QTableWidget::item {\n"
+                                       "    border-style: none;\n"
+                                       "    border-bottom: rgba(255, 255, 255, 50);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QTableWidget::item:selected {\n"
+                                       "    border: none;\n"
+                                       "    color: rgb(255, 255, 255);\n"
+                                       "    background-color: rgba(255, 255, 255, 50);\n"
                                        "}\n"
                                        "\n"
                                        "QHeaderView::section {\n"
@@ -632,6 +637,8 @@ class MainWindow(QMainWindow):
                                        "    color: white;\n"
                                        "    font-size: 14px;\n"
                                        "    padding: 8px;\n"
+                                       "    selection-background-color: transparent;\n"
+                                       "    selection-color: transparent; \n"
                                        "}\n"
                                        "")
         self.tableWidget.setObjectName("tableWidget")
@@ -674,9 +681,9 @@ class MainWindow(QMainWindow):
         self.jobMoney.setText(_translate("MainWindow", "money"))
         self.label_63.setText(_translate("MainWindow", "Акции, вклады, облигации"))
         self.bankMoney.setText(_translate("MainWindow", "money"))
-        self.label_69.setText(_translate("MainWindow", "Подарки"))
+        self.label_69.setText(_translate("MainWindow", "Подарки1"))
         self.giftEarnMoney.setText(_translate("MainWindow", "money"))
-        self.label_24.setText(_translate("MainWindow", "Другое"))
+        self.label_24.setText(_translate("MainWindow", "Другое1"))
         self.otherEarnMoney.setText(_translate("MainWindow", "money"))
         self.newTransactionButton.setText(_translate("MainWindow", "Добавить доход"))
         self.newTransactionButton_2.setText(_translate("MainWindow", "Добавить расход"))
@@ -689,6 +696,8 @@ class MainWindow(QMainWindow):
         self.deleteButton.setText(_translate("MainWindow", "Удалить транзакцию"))
         self.excelButton.setText(_translate("MainWindow", "Вывести в excel"))
 
+        self.labels = [self.label_63, self.label_24, self.label_69, self.label_60]
+
         self.addBankAccButton.clicked.connect(self.add_bank)
 
         self.changePersonComboBox.currentTextChanged.connect(self.render_main_info)
@@ -697,21 +706,22 @@ class MainWindow(QMainWindow):
         self.newTransactionButton_2.clicked.connect(self.add_tr_out)
         self.deleteButton.clicked.connect(self.rm_tr)
 
-        self.tableWidget.setColumnCount(6)
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
         self.tableWidget.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
         self.tableWidget.setHorizontalHeaderLabels(
-            ['Цена', 'Имя дебила', 'Дата', 'Подробности', 'Категория', "Тип транзакции"])
-        self.render_trans()
+            ['Цена', 'Дата', 'Подробности', 'Категория', "Тип транзакции"])
+        self.tableWidget.verticalHeader().hide()
 
     def render_trans(self):
-        self.transs = self.db_manager.select_tr()
+        self.transs = self.db_manager.select_tr(self.current_acc()[0])
         self.tableWidget.setRowCount(len(self.transs))
         for row in range(len(self.transs)):
             for col in range(self.tableWidget.columnCount()):
                 value = self.transs[row][col + 1]
-                if col == 5:
-                    value = "Доход" if int(self.transs[row][6]) == 1 else "Расход"
+                if col == 4:
+                    value = "Доход" if int(self.transs[row][5]) == 1 else "Расход"
                 item = QtWidgets.QTableWidgetItem(f'{value}')
                 self.tableWidget.setItem(row, col, item)
 
@@ -726,20 +736,39 @@ class MainWindow(QMainWindow):
         for i in self.accs:
             self.changePersonComboBox.addItem(i[1])
 
+
+
     def rm_tr(self):
-        print('cost', self.tableWidget.item(self.tableWidget.currentRow(), 0).text())
-        print('date', self.tableWidget.item(self.tableWidget.currentRow(), 2).text())
-        for i in self.transs:
-            if self.tableWidget.item(self.tableWidget.currentRow(), 0).text() == str(i[1]) and \
-                    self.tableWidget.item(self.tableWidget.currentRow(), 2).text() == str(i[3]) and \
-                    self.tableWidget.item(self.tableWidget.currentRow(), 3).text() == str(i[4]) and \
-                    self.tableWidget.item(self.tableWidget.currentRow(), 4).text() == str(i[5]):
-                print(i)
-                self.db_manager.remove_tr(i[1], i[3], i[4], i[5])
-        self.render_trans()
+        try:
+            if self.tableWidget.item(self.tableWidget.currentRow(), 0).text() != 'Цена':
+                for i in self.transs:
+                    if self.tableWidget.item(self.tableWidget.currentRow(), 0).text() == str(i[1]) and \
+                            self.tableWidget.item(self.tableWidget.currentRow(), 1).text() == str(i[2]) and \
+                            self.tableWidget.item(self.tableWidget.currentRow(), 2).text() == str(i[3]) and \
+                            self.tableWidget.item(self.tableWidget.currentRow(), 3).text() == str(i[4]):
+                        self.db_manager.remove_tr(i[1], i[2], i[3], i[4])
+                self.render_trans()
+                self.render_main_info()
+        except:
+            msg = MessageBox(self)
+            msg.show_message(f"Дубина", f"Выбери что-то", MessageBox.Icon.Warning)
 
     def render_main_info(self):
-        self.moneyCurrentBalance.setText(f"{self.current_acc()[3]} рублей")
+        doh = self.db_manager.select_sum_d(self.current_acc()[0])
+        rash = self.db_manager.select_sum_r(self.current_acc()[0])
+
+        self.moneyCurrentBalance.setText(f"{self.current_acc()[3] + doh} рублей")
+        self.earnBalance.setText(f"{doh} рублей")
+        self.spendBalance.setText(f"{rash} рублей")
+        self.render_trans()
+        d_cat = self.db_manager.select_sum_d_cat(self.current_acc()[0])
+        r_cat = self.db_manager.select_sum_r_cat(self.current_acc()[0])
+
+        print(d_cat)
+        print(r_cat)
+
+
+
 
     def info_user_bank_data(self):
         user = self.current_acc()
@@ -749,11 +778,13 @@ class MainWindow(QMainWindow):
     def add_tr_out(self):
         self.new_tr = NewTransaction(self.current_acc()[0], 0)
         self.new_tr.save_pushButton.clicked.connect(self.render_trans)
+        self.new_tr.save_pushButton.clicked.connect(self.render_main_info)
         self.new_tr.show()
 
     def add_tr_in(self):
         self.new_tr = NewTransaction(self.current_acc()[0], 1)
         self.new_tr.save_pushButton.clicked.connect(self.render_trans)
+        self.new_tr.save_pushButton.clicked.connect(self.render_main_info)
         self.new_tr.show()
 
     def add_bank(self):

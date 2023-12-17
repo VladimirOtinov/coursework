@@ -71,21 +71,97 @@ class DatabaseManager:
                 VALUES (?, ?, ?, ?, ?, ?)
             ''', (cost, date, info, category, bank_acc_id, type_tr))
             self.connection.commit()
-            print("добавлен0 000")
         except sqlite3.Error as e:
             print("Ошибка", e)
             return False
 
-    def select_tr(self):
+    def select_tr(self, bank_acc_id):
         try:
             self.cursor.execute('''
-                SELECT id, cost, bank_accounts.name, date, info, category, type_transaction FROM Transaction_
+                SELECT id, cost, date, info, category, type_transaction FROM Transaction_
                 inner join bank_accounts using(bank_acc_id)
-            ''')
+                where bank_acc_id = ?
+            ''', (bank_acc_id,))
             data = self.cursor.fetchall()
             return data
         except sqlite3.Error as e:
             print(e)
+
+    def select_sum_d(self, user_id):
+        try:
+            self.cursor.execute('''
+                SELECT sum(cost) FROM Transaction_
+                where bank_acc_id = ? and type_transaction = 1
+                group by bank_acc_id
+            ''', (user_id,))
+            data = self.cursor.fetchone()
+            if data:
+                return data[0]
+            else: return 0
+        except sqlite3.Error as e:
+            print(e)
+
+    def select_sum_r(self, user_id):
+        try:
+            self.cursor.execute('''
+                SELECT sum(cost) FROM Transaction_
+                where bank_acc_id = ? and type_transaction = 0
+                group by bank_acc_id
+            ''', (user_id,))
+            data = self.cursor.fetchone()
+            if data:
+                return data[0]
+            else:
+                return 0
+        except sqlite3.Error as e:
+            print(e)
+
+    def select_sum_r_cat(self, user_id):
+        try:
+            self.cursor.execute('''
+                SELECT COALESCE(SUM(t.cost),0) AS total_cost, cat.category
+                FROM (
+                    SELECT 'Здоровье' AS category
+                    UNION
+                    SELECT 'Еда'
+                    UNION
+                    SELECT 'Развлечения'
+                    UNION
+                    SELECT 'Подарки'
+                    UNION
+                    SELECT 'Другое'
+                ) AS cat
+                LEFT JOIN Transaction_ t ON t.category = cat.category AND t.bank_acc_id = ? AND t.type_transaction = 0 
+                GROUP BY cat.category
+                order by cat.category
+            ''', (user_id,))
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print(e)
+
+    def select_sum_d_cat(self, user_id):
+        try:
+            self.cursor.execute('''
+                SELECT COALESCE(SUM(t.cost),0) AS total_cost, cat.category
+                FROM (
+                    SELECT 'Работа' AS category
+                    UNION
+                    SELECT 'Акции, вклады, облигации'
+                    UNION
+                    SELECT 'Подарки'
+                    UNION
+                    SELECT 'Другое'
+                ) AS cat
+                LEFT JOIN Transaction_ t ON t.category = cat.category AND t.bank_acc_id = ? AND t.type_transaction = 1
+                GROUP BY cat.category
+                order by cat.category
+            ''', (user_id,))
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print(e)
+
 
     def remove_tr(self, cost, date, info, category):
         try:
@@ -119,7 +195,6 @@ class DatabaseManager:
                 WHERE familly_id = ?
             ''', (familly_id,))
             bank_data = self.cursor.fetchall()
-            print(bank_data)
 
             if bank_data:
                 return bank_data
