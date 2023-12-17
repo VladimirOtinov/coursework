@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 from database import DatabaseManager
@@ -8,6 +10,7 @@ from NewTransaction import NewTransaction
 class MainWindow(QMainWindow):
     def __init__(self, familly_id):
         super(MainWindow, self).__init__()
+        self.bank_acc_dialog = None
         self.new_tr = None
         self.transs = None
         self.tableWidget = None
@@ -15,6 +18,7 @@ class MainWindow(QMainWindow):
         self.db_manager = DatabaseManager("budget.db")
         self.familly_id = familly_id
         self.setupUi(self)
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -559,7 +563,6 @@ class MainWindow(QMainWindow):
         self.sortComboBox.addItem("")
         self.sortComboBox.addItem("")
         self.sortComboBox.addItem("")
-        self.sortComboBox.addItem("")
         self.horizontalLayout_10.addWidget(self.sortComboBox)
         self.deleteButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.deleteButton.setStyleSheet("QPushButton {\n"
@@ -649,6 +652,8 @@ class MainWindow(QMainWindow):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+        self.accs = self.db_manager.get_bank_data(self.familly_id)
+
         self.render_familly_members()
         self.infoBankAccButton.clicked.connect(self.info_user_bank_data)
 
@@ -681,24 +686,22 @@ class MainWindow(QMainWindow):
         self.jobMoney.setText(_translate("MainWindow", "money"))
         self.label_63.setText(_translate("MainWindow", "Акции, вклады, облигации"))
         self.bankMoney.setText(_translate("MainWindow", "money"))
-        self.label_69.setText(_translate("MainWindow", "Подарки1"))
-        self.giftEarnMoney.setText(_translate("MainWindow", "money"))
-        self.label_24.setText(_translate("MainWindow", "Другое1"))
-        self.otherEarnMoney.setText(_translate("MainWindow", "money"))
+        self.label_69.setText(_translate("MainWindow", "Подарки"))
+        self.giftEarnMoney.setText(_translate("MainWindow", "money1"))
+        self.label_24.setText(_translate("MainWindow", "Другое"))
+        self.otherEarnMoney.setText(_translate("MainWindow", "money1"))
         self.newTransactionButton.setText(_translate("MainWindow", "Добавить доход"))
         self.newTransactionButton_2.setText(_translate("MainWindow", "Добавить расход"))
         self.label_23.setText(_translate("MainWindow", "Cортировать по:"))
-        self.sortComboBox.setItemText(0, _translate("MainWindow", "Сумме поступления"))
-        self.sortComboBox.setItemText(1, _translate("MainWindow", "Сумме вычета"))
-        self.sortComboBox.setItemText(2, _translate("MainWindow", "Категории"))
-        self.sortComboBox.setItemText(3, _translate("MainWindow", "Дате (снач. старые)"))
-        self.sortComboBox.setItemText(4, _translate("MainWindow", "Дате (снач. новые)"))
+        self.sortComboBox.setItemText(0, _translate("MainWindow", "Сумме"))
+        self.sortComboBox.setItemText(1, _translate("MainWindow", "Категории"))
+        self.sortComboBox.setItemText(2, _translate("MainWindow", "Дате (снач. старые)"))
+        self.sortComboBox.setItemText(3, _translate("MainWindow", "Дате (снач. новые)"))
         self.deleteButton.setText(_translate("MainWindow", "Удалить транзакцию"))
         self.excelButton.setText(_translate("MainWindow", "Вывести в excel"))
 
-        self.labels = [self.label_63, self.label_24, self.label_69, self.label_60]
-
         self.addBankAccButton.clicked.connect(self.add_bank)
+
 
         self.changePersonComboBox.currentTextChanged.connect(self.render_main_info)
 
@@ -714,8 +717,31 @@ class MainWindow(QMainWindow):
             ['Цена', 'Дата', 'Подробности', 'Категория', "Тип транзакции"])
         self.tableWidget.verticalHeader().hide()
 
+        self.sortComboBox.currentTextChanged.connect(self.render_trans)
+
+        self.delBankAccButton.clicked.connect(self.rm_bank_acc)
+
+
+
+
+
     def render_trans(self):
         self.transs = self.db_manager.select_tr(self.current_acc()[0])
+
+        if self.sortComboBox.currentText() == "Сумме":
+            self.transs = sorted(self.transs, key=lambda x: x[1])[::-1]
+
+        if self.sortComboBox.currentText() == "Категории":
+            self.transs = sorted(self.transs, key=lambda x: x[4])
+
+        if self.sortComboBox.currentText() == "Дате (снач. старые)":
+            self.transs = sorted(self.transs, key=lambda x: datetime.strptime(x[2], '%Y-%m-%d').date())
+
+        if self.sortComboBox.currentText() == "Дате (снач. новые)":
+            self.transs = sorted(self.transs, key=lambda x: datetime.strptime(x[2], '%Y-%m-%d').date())[::-1]
+
+        for i in self.transs:
+            print(i)
         self.tableWidget.setRowCount(len(self.transs))
         for row in range(len(self.transs)):
             for col in range(self.tableWidget.columnCount()):
@@ -726,16 +752,28 @@ class MainWindow(QMainWindow):
                 self.tableWidget.setItem(row, col, item)
 
     def current_acc(self):
-        for i in self.accs:
-            if self.changePersonComboBox.currentText() == str(i[1]):
-                return i
+        return self.accs[self.changePersonComboBox.currentIndex()]
+
+    def rm_bank_acc(self):
+
+        user = self.current_acc()
+        self.db_manager.remove_bank_acc(user[0])
+        self.render_familly_members()
+        self.render_main_info()
 
     def render_familly_members(self):
         self.changePersonComboBox.clear()
         self.accs = self.db_manager.get_bank_data(self.familly_id)
+        if self.accs is None:
+            from NewBankAcc import BankAccWin
+            self.bank_acc_dialog = BankAccWin(self.familly_id, is_registration=False)
+            self.bank_acc_dialog.show()
         for i in self.accs:
             self.changePersonComboBox.addItem(i[1])
-
+        if self.changePersonComboBox.count() == 1:
+            self.delBankAccButton.hide()
+        else:
+            self.delBankAccButton.show()
 
 
     def rm_tr(self):
@@ -754,20 +792,34 @@ class MainWindow(QMainWindow):
             msg.show_message(f"Дубина", f"Выбери что-то", MessageBox.Icon.Warning)
 
     def render_main_info(self):
-        doh = self.db_manager.select_sum_d(self.current_acc()[0])
-        rash = self.db_manager.select_sum_r(self.current_acc()[0])
+        if self.changePersonComboBox.count() == 1:
+            self.delBankAccButton.hide()
+        else:
+            self.delBankAccButton.show()
+        user = self.current_acc()
+        if user is None:
+            user = self.accs[0]
+            self.changePersonComboBox.setCurrentIndex(0)
 
-        self.moneyCurrentBalance.setText(f"{self.current_acc()[3] + doh} рублей")
+        print(user)
+
+        doh = self.db_manager.select_sum_d(user[0])
+        rash = self.db_manager.select_sum_r(user[0])
+
+        self.moneyCurrentBalance.setText(f"{user[3] + doh} рублей")
         self.earnBalance.setText(f"{doh} рублей")
         self.spendBalance.setText(f"{rash} рублей")
         self.render_trans()
-        d_cat = self.db_manager.select_sum_d_cat(self.current_acc()[0])
-        r_cat = self.db_manager.select_sum_r_cat(self.current_acc()[0])
+        d_cat = self.db_manager.select_sum_d_cat(user[0])
+        r_cat = self.db_manager.select_sum_r_cat(user[0])
 
-        print(d_cat)
-        print(r_cat)
+        labels_d = [self.bankMoney, self.otherEarnMoney, self.giftEarnMoney, self.jobMoney]
+        labels_r = [self.otherSpendMoney, self.foodMoney, self.healthMoney, self.giftSpendMoney, self.funMoney]
 
-
+        for i in range(len(labels_d)):
+            labels_d[i].setText(str(d_cat[i][0]))
+        for i in range(len(labels_r)):
+            labels_r[i].setText(str(r_cat[i][0]))
 
 
     def info_user_bank_data(self):

@@ -159,23 +159,20 @@ class AuthWindow(QWidget):
         # Проверка учетных данных в базе данных
         if auth:
             # Открываем главное окно
-            self.main_win = MainWindow(auth[0])
-            self.main_win.show()
+            if not self.db_manager.check_familly(auth[0]):
+                from NewBankAcc import BankAccWin
+                self.bank_acc_dialog = BankAccWin(auth[0], is_registration=False)
+                self.bank_acc_dialog.show()
+            else:
+                self.main_win = MainWindow(auth[0])
+                self.main_win.show()
 
-            # Закрываем соединение с базой данных после открытия главного окна
-            self.db_manager.close_connection()
-
-            # Закрываем окно авторизации
             self.close()
         else:
-            # Отображение сообщения об ошибке
+
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Неправильный логин или пароль", MessageBox.Icon.Critical)
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()
 
     def open_fpw(self):
         from NewPassword import NewPassword

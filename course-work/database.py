@@ -2,6 +2,13 @@ import sqlite3
 
 
 class DatabaseManager:
+    db_object = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.db_object is None:
+            cls.db_object = object.__new__(cls)
+        return cls.db_object
+
     def __init__(self, database_name):
         self.connection = sqlite3.connect(database_name)
         self.cursor = self.connection.cursor()
@@ -44,20 +51,17 @@ class DatabaseManager:
 
         self.connection.commit()
 
-    def close_connection(self):
-        self.connection.close()
-
     def add_user(self, login, password, code_question, code_answer):
         try:
             self.cursor.execute('''
                 INSERT INTO familly (login, password, code_question, code_answer)
                 VALUES (?, ?, ?, ?)
-            ''', (login, password, code_question, code_answer))
+            ''', (login, password, code_question, code_answer,))
             self.connection.commit()
             self.cursor.execute('''
                             SELECT * FROM familly
                             WHERE login = ? AND password = ?
-                        ''', (login, password))
+                        ''', (login, password,))
             user_data = self.cursor.fetchone()
             return user_data
         except sqlite3.Error as e:
@@ -69,7 +73,7 @@ class DatabaseManager:
             self.cursor.execute('''
                 INSERT INTO Transaction_ (cost, date, info, category, bank_acc_id, type_transaction)
                 VALUES (?, ?, ?, ?, ?, ?)
-            ''', (cost, date, info, category, bank_acc_id, type_tr))
+            ''', (cost, date, info, category, bank_acc_id, type_tr,))
             self.connection.commit()
         except sqlite3.Error as e:
             print("Ошибка", e)
@@ -97,7 +101,8 @@ class DatabaseManager:
             data = self.cursor.fetchone()
             if data:
                 return data[0]
-            else: return 0
+            else:
+                return 0
         except sqlite3.Error as e:
             print(e)
 
@@ -162,26 +167,59 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print(e)
 
-
     def remove_tr(self, cost, date, info, category):
         try:
             self.cursor.execute('''
                 DELETE from Transaction_ 
                 where cost = ? and date=? and info =? and category = ? 
-            ''', (cost, date, info, category))
+            ''', (cost, date, info, category,))
             self.connection.commit()
         except sqlite3.Error as e:
             print(e)
+
+    def remove_bank_acc(self, bank_account_id):
+        try:
+            self.cursor.execute('''
+                DELETE FROM Transaction_
+                WHERE bank_acc_id = ?
+            ''', (bank_account_id,))
+            self.connection.commit()
+
+            self.cursor.execute('''
+                DELETE FROM bank_accounts
+                WHERE bank_acc_id = ?
+            ''', (bank_account_id,))
+
+            self.connection.commit()
+            print(f"Счет с ид {bank_account_id} успешно удален.")
+
+        except sqlite3.Error as e:
+            print("Ошибка удаления", e)
 
     def check_credentials(self, login, password):
         try:
             self.cursor.execute('''
                 SELECT * FROM familly
                 WHERE login = ? AND password = ?
-            ''', (login, password))
+            ''', (login, password,))
             user_data = self.cursor.fetchone()
             if user_data:
                 return user_data
+            else:
+                return False
+        except sqlite3.Error as e:
+            print("Ошибка при проверке учетных данных:", e)
+            return False
+
+    def check_familly(self, id):
+        try:
+            self.cursor.execute('''
+                SELECT * FROM bank_accounts
+                WHERE familly_id =?
+            ''', (id,))
+            user_data = self.cursor.fetchone()
+            if user_data:
+                return True
             else:
                 return False
         except sqlite3.Error as e:
@@ -196,10 +234,8 @@ class DatabaseManager:
             ''', (familly_id,))
             bank_data = self.cursor.fetchall()
 
-            if bank_data:
-                return bank_data
-            else:
-                return False
+            return bank_data
+
         except sqlite3.Error as e:
             print("get_bank_data", e)
             return False
@@ -253,7 +289,7 @@ class DatabaseManager:
                 UPDATE familly
                 SET password = ?
                 WHERE familly_id = ?
-            ''', (new_password, user_id))
+            ''', (new_password, user_id,))
             self.connection.commit()
             print("Пароль успешно изменен.")
             return True
@@ -266,10 +302,13 @@ class DatabaseManager:
             self.cursor.execute('''
                 INSERT INTO bank_accounts (name, account_info, money, familly_id)
                 VALUES (?, ?, ?, ?)
-            ''', (name, account_info, money, user_id))
+            ''', (name, account_info, money, user_id,))
             self.connection.commit()
             print("Счет успешно добавлен.")
             return True
         except sqlite3.Error as e:
             print("Ошибка при добавлении счета:", e)
             return False
+
+    def __del__(self):
+        self.connection.close()

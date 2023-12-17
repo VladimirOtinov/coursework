@@ -98,7 +98,3 @@ class StartWindow(QWidget):
         self.dlg = AuthWindow()
         self.dlg.show()
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()

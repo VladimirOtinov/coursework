@@ -55,9 +55,6 @@ class DatabaseManager:
 
         self.connection.commit()
 
-    def close_connection(self):
-        self.connection.close()
-
 
     def add_user(self, login, password, code_question, code_answer):
         try:

@@ -162,7 +162,7 @@ class AuthDialog(QDialog):
             self.main_win.show()
 
             # Закрываем соединение с базой данных после открытия главного окна
-            self.db_manager.close_connection()
+
 
             # Закрываем окно авторизации
             self.close()
@@ -171,10 +171,7 @@ class AuthDialog(QDialog):
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Неправильный логин или пароль", MessageBox.Icon.Critical)
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()
+
 
     def open_fpw(self):
         from ChangePassword import ForgotPassDialog

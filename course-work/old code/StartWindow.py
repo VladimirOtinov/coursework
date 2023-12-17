@@ -13,10 +13,7 @@ class StartWindow(QMainWindow):
 
         self.setupUi(self)
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()
+
     def setupUi(self, startWindow):
         startWindow.resize(453, 225)
 

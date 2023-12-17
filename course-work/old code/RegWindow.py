@@ -211,7 +211,3 @@ class RegDialog(QDialog):
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Не удалось зарегистрировать семью.", MessageBox.Icon.Critical)
 
-    def closeEvent(self, event):
-        # Закрываем соединение с базой данных при закрытии окна
-        self.db_manager.close_connection()
-        event.accept()
