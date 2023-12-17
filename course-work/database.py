@@ -30,25 +30,14 @@ class DatabaseManager:
         ''')
 
         self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Transaction_in (
+            CREATE TABLE IF NOT EXISTS Transaction_ (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 cost REAL,
                 date TEXT,
                 info TEXT,
                 category TEXT,
                 bank_acc_id INTEGER,
-                FOREIGN KEY (bank_acc_id) REFERENCES bank_accounts(bank_acc_id)
-            )
-        ''')
-
-        self.cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Transaction_out (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                cost REAL,
-                date TEXT,
-                info TEXT,
-                category TEXT,
-                bank_acc_id INTEGER,
+                type_transaction int,
                 FOREIGN KEY (bank_acc_id) REFERENCES bank_accounts(bank_acc_id)
             )
         ''')
@@ -57,7 +46,6 @@ class DatabaseManager:
 
     def close_connection(self):
         self.connection.close()
-
 
     def add_user(self, login, password, code_question, code_answer):
         try:
@@ -76,6 +64,38 @@ class DatabaseManager:
             print("Ошибка при добавлении пользователя:", e)
             return False
 
+    def add_tr(self, cost, date, info, category, bank_acc_id, type_tr):
+        try:
+            self.cursor.execute('''
+                INSERT INTO Transaction_ (cost, date, info, category, bank_acc_id, type_transaction)
+                VALUES (?, ?, ?, ?, ?, ?)
+            ''', (cost, date, info, category, bank_acc_id, type_tr))
+            self.connection.commit()
+            print("добавлен0 000")
+        except sqlite3.Error as e:
+            print("Ошибка", e)
+            return False
+
+    def select_tr(self):
+        try:
+            self.cursor.execute('''
+                SELECT id, cost, bank_accounts.name, date, info, category, type_transaction FROM Transaction_
+                inner join bank_accounts using(bank_acc_id)
+            ''')
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print(e)
+
+    def remove_tr(self, cost, date, info, category):
+        try:
+            self.cursor.execute('''
+                DELETE from Transaction_ 
+                where cost = ? and date=? and info =? and category = ? 
+            ''', (cost, date, info, category))
+            self.connection.commit()
+        except sqlite3.Error as e:
+            print(e)
 
     def check_credentials(self, login, password):
         try:
@@ -84,12 +104,9 @@ class DatabaseManager:
                 WHERE login = ? AND password = ?
             ''', (login, password))
             user_data = self.cursor.fetchone()
-
             if user_data:
-                print("Вход выполнен успешно.")
                 return user_data
             else:
-                print("Неправильный логин или пароль.")
                 return False
         except sqlite3.Error as e:
             print("Ошибка при проверке учетных данных:", e)
@@ -111,7 +128,6 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print("get_bank_data", e)
             return False
-
 
     def check_user_exists(self):
         try:
@@ -182,14 +198,3 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print("Ошибка при добавлении счета:", e)
             return False
-
-    def get_accounts(self):
-        try:
-            self.cursor.execute('''
-                SELECT id, name FROM bank_accounts
-            ''')
-            accounts = self.cursor.fetchall()
-            return accounts
-        except sqlite3.Error as e:
-            print("Ошибка при получении списка счетов:", e)
-            return None

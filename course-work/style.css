@@ -69,6 +69,6 @@ color: rgb(255, 255, 255);
 background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 150), stop:1 rgba(179, 0, 241, 150));;
 border: 1px solid rgba(255, 255, 255, 50);
 border-radius: 7px;
-	font: 14pt "MS Shell Dlg 2";
+    font: 14pt "MS Shell Dlg 2";
 }
 

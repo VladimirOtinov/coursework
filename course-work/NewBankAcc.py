@@ -150,6 +150,7 @@ class BankAccWin(QWidget):
 
         # Проверяем результат операции
         if success:
+            from RegOrLog import RegLogWindow
             msg = MessageBox(self)
             msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
             self.close()

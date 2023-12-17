@@ -82,10 +82,10 @@ class RegLogWindow(QWidget):
         from RegWindow import RegWindow
         self.close()
         self.dlg = RegWindow()
-        self.dlg.exec()
+        self.dlg.show()
 
     def open_log(self):
         from AuthWindow import AuthWindow
         self.close()
         self.dlg = AuthWindow()
-        self.dlg.exec()
+        self.dlg.show()

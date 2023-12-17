@@ -9,6 +9,7 @@ class StartWindow(QWidget):
         super().__init__()
 
         # Создайте объект DatabaseManager в конструкторе
+        self.reg_or_log = None
         self.db_manager = DatabaseManager("budget.db")
 
         self.resize(453, 190)
@@ -71,11 +72,19 @@ class StartWindow(QWidget):
         self.startButton.setText(_translate("startWindow", "Начать"))
 
         # Прописать проверку наличия данных про пользователя.
-        if self.db_manager.check_user_exists():
-            self.startButton.clicked.connect(self.open_log)
-        else:
-            self.startButton.clicked.connect(self.open_reg)
+        #if self.db_manager.check_user_exists():
+        #    self.startButton.clicked.connect(self.open_log)
+        #else:
+        #    self.startButton.clicked.connect(self.open_reg)
+        self.startButton.clicked.connect(self.reg_or_log_sh)
 
+
+
+    def reg_or_log_sh(self):
+        from RegOrLog import RegLogWindow
+        self.reg_or_log = RegLogWindow()
+        self.reg_or_log.show()
+        self.close()
 
     def open_reg(self):
         from RegWindow import RegWindow

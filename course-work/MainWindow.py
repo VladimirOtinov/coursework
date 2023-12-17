@@ -1,12 +1,16 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 from database import DatabaseManager
-from message_box import  MessageBox
+from message_box import MessageBox
+from NewTransaction import NewTransaction
 
 
 class MainWindow(QMainWindow):
     def __init__(self, familly_id):
         super(MainWindow, self).__init__()
+        self.new_tr = None
+        self.transs = None
+        self.tableWidget = None
         self.accs = None
         self.db_manager = DatabaseManager("budget.db")
         self.familly_id = familly_id
@@ -581,37 +585,57 @@ class MainWindow(QMainWindow):
         self.deleteButton.setObjectName("deleteButton")
         self.horizontalLayout_10.addWidget(self.deleteButton)
         self.verticalLayout_3.addLayout(self.horizontalLayout_10)
+
+        self.excelButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.excelButton.setStyleSheet("QPushButton {\n"
+                                       "font: 11pt \"MS Shell Dlg 2\";\n"
+                                       "color: rgb(255, 255, 255);\n"
+                                       "background-color: rgba(255, 255, 255, 50);\n"
+                                       "border: 1px solid rgba(255, 255, 255, 60);\n"
+                                       "border-radius: 7px;\n"
+                                       "width: 230px;\n"
+                                       "height: 30px;\n"
+                                       "}\n"
+                                       "QPushButton:hover{\n"
+                                       "background-color: rgba(255, 255, 255, 60);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QPushButton:pressed{\n"
+                                       "background-color: rgba(255, 255, 255, 80);\n"
+                                       "}")
+        self.excelButton.setIcon(icon1)
+        self.excelButton.setIconSize(QtCore.QSize(20, 20))
+        self.excelButton.setObjectName("excelButton")
+        self.horizontalLayout_10.addWidget(self.excelButton)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_10)
         self.tableWidget = QtWidgets.QTableWidget(parent=self.centralwidget)
-        self.tableWidget.setStyleSheet('QTableWidget {\n'
-                                       'background-color: rgba(255, 255, 255, 30);\n'
-                                       'border: 1px solid rgba(255, 255, 255, 40);\n'
-                                       'border-bottom-left-radius: 7px;\n'
-                                       'border-bottom-right-radius: 7px;\n'
-                                       '}\n'
-                                       '\n'
-                                       'QTableWidget::section{\n'
-                                       'background-color: rgba(53,53,53);\n'
-                                       'color: rgb(255, 255, 255);\n'
-                                       'border: none;\n'
-                                       'height: 50px;\n'
-                                       'font: 14pt "MS Shell Dlg 2";\n'
-                                       '}\n'
-                                       '\n'
-                                       'QTableWidget::item{\n'
-                                       'border-style: none;\n'
-                                       'border-bottom: rgba(255, 255, 255, 50);\n'
-                                       '}\n'
-                                       '\n'
-                                       'QTableWidget::item:selected{\n'
-                                       'border: none;\n'
-                                       'color: rgb(255, 255, 255);\n'
-                                       'background-color: rgba(255, 255, 255, 50);\n'
-                                       '}\n'
-                                       '\n'
-                                       '')
+        self.tableWidget.setStyleSheet("QTableWidget {\n"
+                                       "background-color: rgba(255, 255, 255, 30);\n"
+                                       "border: 2px solid rgba(255, 255, 255, 40);\n"
+                                       "border-bottom-left-radius: 7px;\n"
+                                       "border-bottom-right-radius: 7px;\n"
+                                       "}\n"
+                                       "\n"
+                                       "QTableWidget:item{\n"
+                                       "border-style: none;\n"
+                                       "border-bottom: rgba(255, 255, 255, 50);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QTableWidget:item:selected{\n"
+                                       "border: none;\n"
+                                       "color: rgb(255, 255, 255);\n"
+                                       "background-color: rgba(255, 255, 255, 50);\n"
+                                       "}\n"
+                                       "\n"
+                                       "QHeaderView::section {\n"
+                                       "    background-color: rgba(0, 0, 0, 30);\n"
+                                       "    color: white;\n"
+                                       "    font-size: 14px;\n"
+                                       "    padding: 8px;\n"
+                                       "}\n"
+                                       "")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
-        self.tableWidget.setRowCount(0)
+
         self.verticalLayout_3.addWidget(self.tableWidget)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -663,32 +687,74 @@ class MainWindow(QMainWindow):
         self.sortComboBox.setItemText(3, _translate("MainWindow", "Дате (снач. старые)"))
         self.sortComboBox.setItemText(4, _translate("MainWindow", "Дате (снач. новые)"))
         self.deleteButton.setText(_translate("MainWindow", "Удалить транзакцию"))
+        self.excelButton.setText(_translate("MainWindow", "Вывести в excel"))
 
         self.addBankAccButton.clicked.connect(self.add_bank)
 
+        self.changePersonComboBox.currentTextChanged.connect(self.render_main_info)
+
+        self.newTransactionButton.clicked.connect(self.add_tr_in)
+        self.newTransactionButton_2.clicked.connect(self.add_tr_out)
+        self.deleteButton.clicked.connect(self.rm_tr)
+
+        self.tableWidget.setColumnCount(6)
+        self.tableWidget.setSelectionBehavior(QtWidgets.QTableWidget.SelectionBehavior.SelectRows)
+        self.tableWidget.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        self.tableWidget.setHorizontalHeaderLabels(
+            ['Цена', 'Имя дебила', 'Дата', 'Подробности', 'Категория', "Тип транзакции"])
+        self.render_trans()
+
+    def render_trans(self):
+        self.transs = self.db_manager.select_tr()
+        self.tableWidget.setRowCount(len(self.transs))
+        for row in range(len(self.transs)):
+            for col in range(self.tableWidget.columnCount()):
+                value = self.transs[row][col + 1]
+                if col == 5:
+                    value = "Доход" if int(self.transs[row][6]) == 1 else "Расход"
+                item = QtWidgets.QTableWidgetItem(f'{value}')
+                self.tableWidget.setItem(row, col, item)
+
+    def current_acc(self):
+        for i in self.accs:
+            if self.changePersonComboBox.currentText() == str(i[1]):
+                return i
 
     def render_familly_members(self):
         self.changePersonComboBox.clear()
         self.accs = self.db_manager.get_bank_data(self.familly_id)
-        print("accs", self.accs)
         for i in self.accs:
             self.changePersonComboBox.addItem(i[1])
 
+    def rm_tr(self):
+        print('cost', self.tableWidget.item(self.tableWidget.currentRow(), 0).text())
+        print('date', self.tableWidget.item(self.tableWidget.currentRow(), 2).text())
+        for i in self.transs:
+            if self.tableWidget.item(self.tableWidget.currentRow(), 0).text() == str(i[1]) and \
+                    self.tableWidget.item(self.tableWidget.currentRow(), 2).text() == str(i[3]) and \
+                    self.tableWidget.item(self.tableWidget.currentRow(), 3).text() == str(i[4]) and \
+                    self.tableWidget.item(self.tableWidget.currentRow(), 4).text() == str(i[5]):
+                print(i)
+                self.db_manager.remove_tr(i[1], i[3], i[4], i[5])
+        self.render_trans()
+
+    def render_main_info(self):
+        self.moneyCurrentBalance.setText(f"{self.current_acc()[3]} рублей")
+
     def info_user_bank_data(self):
-        user = None
-        for i in self.accs:
-            if self.changePersonComboBox.currentText() == str(i[1]):
-                user = i
-
-        print(user)
-
+        user = self.current_acc()
         msg = MessageBox(self)
         msg.show_message(f"Информация о счете: {user[1]}", f"Аккаунт: {user[2]}", MessageBox.Icon.Information)
 
+    def add_tr_out(self):
+        self.new_tr = NewTransaction(self.current_acc()[0], 0)
+        self.new_tr.save_pushButton.clicked.connect(self.render_trans)
+        self.new_tr.show()
 
-
-
-
+    def add_tr_in(self):
+        self.new_tr = NewTransaction(self.current_acc()[0], 1)
+        self.new_tr.save_pushButton.clicked.connect(self.render_trans)
+        self.new_tr.show()
 
     def add_bank(self):
         from NewBankAcc import BankAccWin

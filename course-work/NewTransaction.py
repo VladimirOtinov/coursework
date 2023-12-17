@@ -1,11 +1,15 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QWidget
+from database import DatabaseManager
 
 
-class NewEarn(QWidget):
-    def __init__(self):
-        super(NewEarn, self).__init__()
+class NewTransaction(QWidget):
+    def __init__(self, acc_id, type_tr):
+        super(NewTransaction, self).__init__()
+        self.type_tr = type_tr
+        self.acc_id = acc_id
         self.setupUi(self)
+        self.db_manager = DatabaseManager("budget.db")
 
     def setupUi(self, Form):
         Form.setObjectName("Form")
@@ -94,20 +98,51 @@ class NewEarn(QWidget):
         self.verticalLayout.addWidget(self.save_pushButton)
         self.verticalLayout_2.addWidget(self.frame)
 
+        self.categoryComboBox.setStyleSheet("\n"
+                                           "QComboBox {\n"
+                                           "color: rgb(255, 255, 255);\n"
+                                           "background-color: qlineargradient(spread:reflect, x1:0.549682, y1:0.494, x2:0, y2:0, stop:0 rgba(0, 18, 221, 150), stop:1 rgba(179, 0, 241, 150));;\n"
+                                           "border: 1px solid rgba(255, 255, 255, 50);\n"
+                                           "border-radius: 7px;\n"
+                                           "    font: 14pt \"MS Shell Dlg 2\";\n"
+                                           "}\n"
+                                           "")
+
         self.retranslateUi(Form)
         self.categoryComboBox.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+
         self.transaction_label.setText(_translate("Form", "Новая транзакция"))
-        self.categoryComboBox.setCurrentText(_translate("Form", "Выберите категорию"))
-        self.categoryComboBox.setItemText(0, _translate("Form", "Выберите категорию"))
-        self.categoryComboBox.setItemText(1, _translate("Form", "Работа"))
-        self.categoryComboBox.setItemText(2, _translate("Form", "Акции, вклады, облигации"))
-        self.categoryComboBox.setItemText(3, _translate("Form", "Подарки"))
-        self.categoryComboBox.setItemText(4, _translate("Form", "Другое"))
         self.descriptionLine.setPlaceholderText(_translate("Form", "Описание"))
         self.money_sumLine.setPlaceholderText(_translate("Form", "Введите сумму транзакции, до сотых"))
         self.save_pushButton.setText(_translate("Form", "Сохранить Транзанкцию"))
+        self.save_pushButton.clicked.connect(self.add_tr)
+        if self.type_tr == 1:
+            Form.setWindowTitle(_translate("Form", "Новый доход"))
+            self.categoryComboBox.setCurrentText(_translate("Form", "Выберите категорию"))
+            self.categoryComboBox.setItemText(0, _translate("Form", "Выберите категорию"))
+            self.categoryComboBox.setItemText(1, _translate("Form", "Работа"))
+            self.categoryComboBox.setItemText(2, _translate("Form", "Акции, вклады, облигации"))
+            self.categoryComboBox.setItemText(3, _translate("Form", "Подарки"))
+            self.categoryComboBox.setItemText(4, _translate("Form", "Другое"))
+        elif self.type_tr == 0:
+            Form.setWindowTitle(_translate("Form", "Новый расход"))
+            self.categoryComboBox.setItemText(0, _translate("Form", "Выберите категорию"))
+            self.categoryComboBox.setItemText(1, _translate("Form", "Здоровье"))
+            self.categoryComboBox.setItemText(2, _translate("Form", "Еда"))
+            self.categoryComboBox.setItemText(3, _translate("Form", "Развлечения"))
+            self.categoryComboBox.setItemText(4, _translate("Form", "Подарки"))
+            self.categoryComboBox.setItemText(5, _translate("Form", "Другое"))
+
+
+    def add_tr(self):
+        if self.categoryComboBox.currentText() != "Выберите категорию":
+            cost = self.money_sumLine.text()
+            date = self.dateEdit.date().toPyDate()
+            info = self.descriptionLine.text()
+            category = self.categoryComboBox.currentText()
+            bank_acc_id = self.acc_id
+            self.db_manager.add_tr(cost, date, info, category, bank_acc_id, self.type_tr)
