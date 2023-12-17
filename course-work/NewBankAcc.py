@@ -148,20 +148,17 @@ class BankAccWin(QWidget):
         # Добавляем счет в базу данных
         success = self.db_manager.add_bank_account(account_name, account_info, initial_balance, self.user_id)
 
-        self.main_win = MainWindow()
-        self.main_win.show()
+        # Проверяем результат операции
+        if success:
+            msg = MessageBox(self)
+            msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
+            self.close()
+            self.main_win = MainWindow()
+            self.main_win.show()
 
-
-
-       ## Проверяем результат операции
-       #if success:
-       #    #msg = MessageBox(self)
-       #    #msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
-       #    print("Успех", "Счет успешно добавлен.")
-
-       #else:
-       #    error_msg = MessageBox(self)
-       #    error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
+        else:
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
     def back_click(self):
         from MainWindow import MainWindow
         self.close()
