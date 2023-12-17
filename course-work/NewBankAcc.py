@@ -130,6 +130,7 @@ class BankAccDialog(QDialog):
         self.saveButton.clicked.connect(self.save_family_member_account)
 
     def save_family_member_account(self):
+        from message_box import MessageBox
         from AuthWindow import AuthDialog
         # Получаем данные из полей ввода
         account_name = self.bankAccLine.text().strip()
@@ -138,7 +139,8 @@ class BankAccDialog(QDialog):
 
         # Проверяем, что все необходимые данные введены
         if not account_name or not account_info:
-            QtWidgets.QMessageBox.warning(self, "Предупреждение", "Заполните все поля.")
+            warn_msg = MessageBox(self)
+            warn_msg.show_message("Предупреждение", "Заполните все поля.", MessageBox.Icon.Warning)
             return
 
         # Добавляем счет в базу данных
@@ -146,10 +148,12 @@ class BankAccDialog(QDialog):
 
         # Проверяем результат операции
         if success:
-            QtWidgets.QMessageBox.information(self, "Успех", "Счет успешно добавлен.")
+            msg = MessageBox(self)
+            msg.show_message("Успех", "Счет успешно добавлен.", MessageBox.Icon.Information)
 
             # Открываем новое окно с текущим окном в качестве родителя
             self.auth = AuthDialog(parent=self)
             self.auth.show()
         else:
-            QtWidgets.QMessageBox.warning(self, "Ошибка", "Не удалось добавить счет. Попробуйте еще раз.")
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
