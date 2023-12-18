@@ -111,6 +111,7 @@ class AskLogWindow(QWidget):
 
     def checkLogin(self):
         from NewPassword import NewPassword
+        from message_box import MessageBox
         login = self.loginLine.text().strip()
         if login:
             family_id = self.db_manager.get_user_id_by_login(login)
@@ -121,9 +122,11 @@ class AskLogWindow(QWidget):
                 self.new_password_window.show()
 
             else:
-                QtWidgets.QMessageBox.warning(self, "Ошибка", "Пользователь с таким логином не найден.")
+                error_msg = MessageBox(self)
+                error_msg.show_message("Ошибка", "Пользователь с таким логином не найден.", MessageBox.Icon.Error)
         else:
-            QtWidgets.QMessageBox.warning(self, "Ошибка", "Введите логин.")
+            warn_msg = MessageBox(self)
+            warn_msg.show_message("Ошибка", "Введите логин семьи.", MessageBox.Icon.Warning)
 
     def open_log(self):
         from AuthWindow import AuthWindow
