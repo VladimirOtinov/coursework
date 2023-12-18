@@ -741,6 +741,7 @@ class MainWindow(QMainWindow):
 
         self.delBankAccButton.clicked.connect(self.rm_bank_acc)
         self.changeFamilyButton.clicked.connect(self.reg_or_log_sh)
+        self.excelButton.clicked.connect(self.export_excel_file)
 
 
 
@@ -874,6 +875,7 @@ class MainWindow(QMainWindow):
 
     def export_excel_file(self):
         from message_box import MessageBox
+        from report_generator import ReportGenerator
         pass
         """
         идея такая: 
@@ -889,3 +891,20 @@ class MainWindow(QMainWindow):
         выводится для каждого члена семьи раздельно
         
         """
+        try:
+            report_generator = ReportGenerator(self.db_manager)
+
+            # Генерация диаграмм и отчета
+            report_generator.generate_family_income_chart()
+            report_generator.generate_family_category_chart()
+            report_generator.generate_individual_charts()
+            report_generator.generate_excel_report()
+
+            from message_box import MessageBox
+            success_msg = MessageBox(self)
+            success_msg.show_message("Успех", "Экспорт выполнен успешно.", MessageBox.Icon.Information)
+
+        except Exception as e:
+            print("Ошибка при экспорте в Excel:", e)
+            error_msg = MessageBox(self)
+            error_msg.show_message("Ошибка", "Произошла ошибка при экспорте в Excel.", MessageBox.Icon.Error)

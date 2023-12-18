@@ -328,5 +328,52 @@ class DatabaseManager:
             print("Ошибка при получении идентификатора пользователя по логину:", e)
             return None
 
+
+
+    def get_family_income_data(self):
+        try:
+            self.cursor.execute('''
+                SELECT login, (SUM(cost) * 100) / (SELECT SUM(cost) FROM Transaction_ WHERE type_transaction = 0) AS income_percentage
+                FROM Family
+                LEFT JOIN bank_accounts USING (family_id)
+                LEFT JOIN Transaction_ USING (bank_acc_id)
+                WHERE type_transaction = 0
+                GROUP BY login
+            ''')
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print("Ошибка при получении данных о доходах членов семьи:", e)
+            return []
+
+    def get_family_category_data(self):
+        try:
+            self.cursor.execute('''
+                SELECT category, (SUM(cost) * 100) / (SELECT SUM(cost) FROM Transaction_ WHERE type_transaction = 0) AS category_percentage
+                FROM Transaction_
+                WHERE type_transaction = 0
+                GROUP BY category
+            ''')
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print("Ошибка при получении данных о доходах по категориям для семьи:", e)
+            return []
+
+    def get_member_income_data(self, family_id):
+        try:
+            self.cursor.execute('''
+                SELECT category, (SUM(cost) * 100) / (SELECT SUM(cost) FROM Transaction_ WHERE type_transaction = 0 AND bank_acc_id IN (SELECT bank_acc_id FROM bank_accounts WHERE family_id = ?)) AS percentage
+                FROM Transaction_
+                WHERE type_transaction = 0 AND bank_acc_id IN (SELECT bank_acc_id FROM bank_accounts WHERE family_id = ?)
+                GROUP BY category
+            ''', (family_id, family_id,))
+            data = self.cursor.fetchall()
+            return data
+        except sqlite3.Error as e:
+            print("Ошибка при получении данных о доходах для члена семьи:", e)
+            return []
+
+
     def __del__(self):
         self.connection.close()
