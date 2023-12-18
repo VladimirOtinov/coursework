@@ -94,7 +94,7 @@ class RegWindow(QWidget):
                                    "font: 75 20pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;")
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName("questionLabel")
         self.verticalLayout_7.addWidget(self.label_5)
 
         # Создаем фрейм внутри фрейма для ввода вопроса и ответа

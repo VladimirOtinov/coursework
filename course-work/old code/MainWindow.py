@@ -175,7 +175,7 @@ class MyMainWindow(QWidget):
 "padding-top: 5px;")
         self.label_5.setText("")
         self.label_5.setPixmap(QtGui.QPixmap(":/icon/icons/outcome.svg"))
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName("questionLabel")
         self.horizontalLayout_2.addWidget(self.label_5)
         self.spend = QtWidgets.QLabel(parent=self.Balance_frame)
         self.spend.setStyleSheet("color: rgb(255, 255, 255);\n"

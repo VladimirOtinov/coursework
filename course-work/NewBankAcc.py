@@ -160,6 +160,9 @@ class BankAccWin(QWidget):
         else:
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Не удалось добавить счет. Попробуйте еще раз.", MessageBox.Icon.Critical)
+
     def back_click(self):
+        from MainWindow import MainWindow
         self.close()
+        self.main_win = MainWindow(self.user_id)
         self.main_win.show()

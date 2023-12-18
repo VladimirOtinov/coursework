@@ -10,7 +10,7 @@ class DatabaseManager:
     def create_tables(self):
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS User (
-                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                family_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 login TEXT,
                 password TEXT,
                 code_question TEXT,
@@ -24,8 +24,8 @@ class DatabaseManager:
                 name TEXT NOT NULL,
                 account_info TEXT,
                 money REAL NOT NULL,
-                user_id INTEGER NOT NULL,
-                FOREIGN KEY (user_id) REFERENCES User(user_id)
+                family_id INTEGER NOT NULL,
+                FOREIGN KEY (family_id) REFERENCES User(family_id)
             )
         ''')
 
@@ -100,7 +100,7 @@ class DatabaseManager:
         try:
             self.cursor.execute('''
                 SELECT code_question FROM User
-                ORDER BY user_id ASC LIMIT 1
+                ORDER BY family_id ASC LIMIT 1
             ''')
             question = self.cursor.fetchone()
 
@@ -117,7 +117,7 @@ class DatabaseManager:
         try:
             self.cursor.execute('''
                 SELECT code_answer FROM User
-                ORDER BY user_id ASC LIMIT 1
+                ORDER BY family_id ASC LIMIT 1
             ''')
             answer = self.cursor.fetchone()
 
@@ -135,7 +135,7 @@ class DatabaseManager:
             self.cursor.execute('''
                 UPDATE User
                 SET password = ?
-                WHERE user_id = ?
+                WHERE family_id = ?
             ''', (new_password, user_id))
             self.connection.commit()
             print("Пароль успешно изменен.")
@@ -147,7 +147,7 @@ class DatabaseManager:
     def add_bank_account(self, name, account_info, money, user_id):
         try:
             self.cursor.execute('''
-                INSERT INTO bank_accounts (name, account_info, money, user_id)
+                INSERT INTO bank_accounts (name, account_info, money, family_id)
                 VALUES (?, ?, ?, ?)
             ''', (name, account_info, money, user_id))
             self.connection.commit()

@@ -33,6 +33,25 @@ class MainWindow(QMainWindow):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.changeFamilyButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.changeFamilyButton.setStyleSheet("QPushButton {\n"
+                                              "font: 11pt \"MS Shell Dlg 2\";\n"
+                                              "color: rgb(255, 255, 255);\n"
+                                              "background-color: rgba(255, 255, 255, 50);\n"
+                                              "border: 1px solid rgba(255, 255, 255, 60);\n"
+                                              "border-radius: 7px;\n"
+                                              "width: 230px;\n"
+                                              "height: 30px;\n"
+                                              "}\n"
+                                              "QPushButton:hover{\n"
+                                              "background-color: rgba(255, 255, 255, 70);\n"
+                                              "}\n"
+                                              "\n"
+                                              "QPushButton:pressed{\n"
+                                              "background-color: rgba(255, 255, 255, 80);\n"
+                                              "}")
+        self.changeFamilyButton.setObjectName("changeFamilyButton")
+        self.horizontalLayout_4.addWidget(self.changeFamilyButton)
         self.addBankAccButton = QtWidgets.QPushButton(parent=self.centralwidget)
         self.addBankAccButton.setStyleSheet("QPushButton {\n"
                                             "font: 11pt \"MS Shell Dlg 2\";\n"
@@ -191,7 +210,7 @@ class MainWindow(QMainWindow):
                                    "padding-top: 5px;")
         self.label_5.setText("")
         self.label_5.setPixmap(QtGui.QPixmap(":/icon/icons/outcome.svg"))
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName("questionLabel")
         self.horizontalLayout_2.addWidget(self.label_5)
         self.spend = QtWidgets.QLabel(parent=self.Balance_frame)
         self.spend.setStyleSheet("color: rgb(255, 255, 255);\n"
@@ -660,6 +679,7 @@ class MainWindow(QMainWindow):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "WalletWise: Family Finance Tracker"))
+        self.changeFamilyButton.setText(_translate("MainWindow", "Сменить аккаунт"))
         self.addBankAccButton.setText(_translate("MainWindow", "Добавить счет"))
         self.delBankAccButton.setText(_translate("MainWindow", "Удалить счет"))
         self.label_22.setText(_translate("MainWindow", "Владелец текущего счета:"))
@@ -720,6 +740,7 @@ class MainWindow(QMainWindow):
         self.sortComboBox.currentTextChanged.connect(self.render_trans)
 
         self.delBankAccButton.clicked.connect(self.rm_bank_acc)
+        self.changeFamilyButton.clicked.connect(self.reg_or_log_sh)
 
 
 
@@ -753,6 +774,12 @@ class MainWindow(QMainWindow):
 
     def current_acc(self):
         return self.accs[self.changePersonComboBox.currentIndex()]
+
+    def reg_or_log_sh(self):
+        from RegOrLog import RegLogWindow
+        self.reg_or_log = RegLogWindow()
+        self.reg_or_log.show()
+        self.close()
 
     def rm_bank_acc(self):
 
@@ -789,7 +816,7 @@ class MainWindow(QMainWindow):
                 self.render_main_info()
         except:
             msg = MessageBox(self)
-            msg.show_message(f"Дубина", f"Выбери что-то", MessageBox.Icon.Warning)
+            msg.show_message(f"Предупреждение", f"Выберите одину из строк в таблице нажав на любой элемент входящий в нее.", MessageBox.Icon.Warning)
 
     def render_main_info(self):
         if self.changePersonComboBox.count() == 1:
@@ -844,3 +871,21 @@ class MainWindow(QMainWindow):
         self.hide()
         self.addBank = BankAccWin(self.familly_id)
         self.addBank.show()
+
+    def export_excel_file(self):
+        from message_box import MessageBox
+        pass
+        """
+        идея такая: 
+        лист1: реализовать вывод диаграмм с общей статистикой, всего 4 диаграммы, 2 доходы, 2 расходы
+        одна с доходами отображает членов семьи, показывает в процентном соотношении кто сколько зааботал
+        вторая с доходами всей семьи по категории, то есть идет группировка по категориям для всех членов семьи,
+        где в процентном соотношении показывается по каким категориям семья заработала сколько
+        аналогичные диаграммы для расходов
+        
+        лист2: реализовать вывод в excel диаграмм по расходам и доходам раздельно
+        то есть вывести круговую диаграмму "Доходы" в которой будет содержаться закрашенные 
+        части означающие процент доходов и расходов по данной категории. Аналогично выводится по расходам
+        выводится для каждого члена семьи раздельно
+        
+        """
