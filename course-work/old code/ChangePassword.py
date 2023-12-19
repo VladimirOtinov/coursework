@@ -60,7 +60,7 @@ class ForgotPassDialog(QDialog):
         self.lineEdit.setStyleSheet("font-size: 16pt;\n"
 "color:rgb(255, 255, 255);\n"
 "padding-left: 10px;")
-        self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.setObjectName("codeQuestionLine")
         self.verticalLayout_3.addWidget(self.lineEdit)
         self.verticalLayout_2.addWidget(self.frame_2)
         self.frame_4 = QtWidgets.QFrame(parent=self.frame)
@@ -80,13 +80,13 @@ class ForgotPassDialog(QDialog):
         self.lineEdit_2.setStyleSheet("font-size: 16pt;\n"
 "color:rgb(255, 255, 255);\n"
 "padding-left: 10px;")
-        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.lineEdit_2.setObjectName("codeAnswerLine")
         self.verticalLayout_5.addWidget(self.lineEdit_2)
         self.lineEdit_3 = QtWidgets.QLineEdit(parent=self.frame_4)
         self.lineEdit_3.setStyleSheet("font-size: 16pt;\n"
 "color:rgb(255, 255, 255);\n"
 "padding-left: 10px;")
-        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.lineEdit_3.setObjectName("confPasswordLine")
         self.verticalLayout_5.addWidget(self.lineEdit_3)
         self.verticalLayout_2.addWidget(self.frame_4)
         self.horizontalLayout = QtWidgets.QHBoxLayout()

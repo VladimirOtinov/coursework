@@ -24,14 +24,14 @@ class RegWindow(QWidget):
         self.verticalLayout.setObjectName("verticalLayout")
 
         # Создаем метку для заголовка
-        self.label_8 = QtWidgets.QLabel(self)
-        self.label_8.setStyleSheet("color: rgb(255, 255, 255);\n"
+        self.headLabel = QtWidgets.QLabel(self)
+        self.headLabel.setStyleSheet("color: rgb(255, 255, 255);\n"
                                    "font: 75 24pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;\n"
                                    "font-weight: bold;")
-        self.label_8.setObjectName("label_8")
-        self.verticalLayout.addWidget(self.label_8)
+        self.headLabel.setObjectName("headLabel")
+        self.verticalLayout.addWidget(self.headLabel)
 
         # Создаем фрейм для данных авторизации
         self.passwordFrame = QtWidgets.QFrame(self)
@@ -55,23 +55,23 @@ class RegWindow(QWidget):
         self.verticalLayout_3.addWidget(self.label)
 
         # Создаем поля для ввода данных авторизации
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.passwordFrame)
-        self.lineEdit_5.setStyleSheet("font-size: 16pt;\n"
+        self.famLogLine = QtWidgets.QLineEdit(self.passwordFrame)
+        self.famLogLine.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.verticalLayout_3.addWidget(self.lineEdit_5)
+        self.verticalLayout_3.addWidget(self.famLogLine)
 
-        self.lineEdit_4 = QtWidgets.QLineEdit(self.passwordFrame)
-        self.lineEdit_4.setStyleSheet("font-size: 16pt;\n"
+        self.passwordLine = QtWidgets.QLineEdit(self.passwordFrame)
+        self.passwordLine.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.verticalLayout_3.addWidget(self.lineEdit_4)
+        self.verticalLayout_3.addWidget(self.passwordLine)
 
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.passwordFrame)
-        self.lineEdit_3.setStyleSheet("font-size: 16pt;\n"
+        self.confPasswordLine = QtWidgets.QLineEdit(self.passwordFrame)
+        self.confPasswordLine.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.verticalLayout_3.addWidget(self.lineEdit_3)
+        self.verticalLayout_3.addWidget(self.confPasswordLine)
 
         # Добавляем фрейм в основной layout
         self.verticalLayout.addWidget(self.passwordFrame)
@@ -89,13 +89,13 @@ class RegWindow(QWidget):
         self.verticalLayout_7.setObjectName("verticalLayout_7")
 
         # Создаем метку для восстановления пароля
-        self.label_5 = QtWidgets.QLabel(self.remembPassFrame)
-        self.label_5.setStyleSheet("color: rgb(255, 255, 255);\n"
+        self.recPassLabel = QtWidgets.QLabel(self.remembPassFrame)
+        self.recPassLabel.setStyleSheet("color: rgb(255, 255, 255);\n"
                                    "font: 75 20pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;")
-        self.label_5.setObjectName("questionLabel")
-        self.verticalLayout_7.addWidget(self.label_5)
+        self.recPassLabel.setObjectName("questionLabel")
+        self.verticalLayout_7.addWidget(self.recPassLabel)
 
         # Создаем фрейм внутри фрейма для ввода вопроса и ответа
         self.frame_2 = QtWidgets.QFrame(self.remembPassFrame)
@@ -107,34 +107,34 @@ class RegWindow(QWidget):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
 
         # Создаем метку для ввода вопроса и ответа
-        self.label_6 = QtWidgets.QLabel(self.frame_2)
-        self.label_6.setStyleSheet("color: rgb(255, 255, 255);\n"
+        self.recPassMoreLabel = QtWidgets.QLabel(self.frame_2)
+        self.recPassMoreLabel.setStyleSheet("color: rgb(255, 255, 255);\n"
                                    "font: 75 12pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;")
-        self.label_6.setObjectName("label_6")
-        self.verticalLayout_8.addWidget(self.label_6)
+        self.recPassMoreLabel.setObjectName("recPassMoreLabel")
+        self.verticalLayout_8.addWidget(self.recPassMoreLabel)
 
         # Создаем поля для ввода вопроса и ответа
-        self.lineEdit = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit.setStyleSheet("font-size: 16pt;\n"
+        self.codeQuestionLine = QtWidgets.QLineEdit(self.frame_2)
+        self.codeQuestionLine.setStyleSheet("font-size: 16pt;\n"
                                     "color:rgb(255, 255, 255);\n"
                                     "padding-left: 10px;")
-        self.verticalLayout_8.addWidget(self.lineEdit)
+        self.verticalLayout_8.addWidget(self.codeQuestionLine)
 
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.frame_2)
-        self.lineEdit_2.setStyleSheet("font-size: 16pt;\n"
+        self.codeAnswerLine = QtWidgets.QLineEdit(self.frame_2)
+        self.codeAnswerLine.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.verticalLayout_8.addWidget(self.lineEdit_2)
+        self.verticalLayout_8.addWidget(self.codeAnswerLine)
 
         # Добавляем фрейм в основной layout
         self.verticalLayout_7.addWidget(self.frame_2)
         self.verticalLayout.addWidget(self.remembPassFrame)
 
         # Создаем кнопку "Сохранить"
-        self.pushButton = QtWidgets.QPushButton(self)
-        self.pushButton.setStyleSheet("QPushButton {\n"
+        self.saveButton = QtWidgets.QPushButton(self)
+        self.saveButton.setStyleSheet("QPushButton {\n"
                                       "font: 11pt \"MS Shell Dlg 2\";\n"
                                       "color: rgb(255, 255, 255);\n"
                                       "background-color: rgba(255, 255, 255, 50);\n"
@@ -150,32 +150,32 @@ class RegWindow(QWidget):
                                       "QPushButton:pressed{\n"
                                       "background-color: rgba(255, 255, 255, 80);\n"
                                       "}")
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout.addWidget(self.pushButton)
+        self.saveButton.setObjectName("saveButton")
+        self.verticalLayout.addWidget(self.saveButton)
 
         # Переводим текст на форму
         self.retranslateUi()
 
         # Соединяем слоты и сигналы
         QtCore.QMetaObject.connectSlotsByName(self)
-        self.setTabOrder(self.lineEdit, self.pushButton)
+        self.setTabOrder(self.codeQuestionLine, self.saveButton)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("regDialog", "WalletWise: Family Finance Tracker"))
-        self.label_8.setText(_translate("regDialog", "Создание аккаунта семьи"))
+        self.headLabel.setText(_translate("regDialog", "Создание аккаунта семьи"))
         self.label.setText(_translate("regDialog", "Данные для авторизации"))
-        self.lineEdit_5.setPlaceholderText(_translate("regDialog", "Введите фамилию семьи"))
-        self.lineEdit_4.setPlaceholderText(_translate("regDialog", "Придумайте и введите пароль"))
-        self.lineEdit_3.setPlaceholderText(_translate("regDialog", "Введите пароль повторно"))
-        self.label_5.setText(_translate("regDialog", "Восстановление пароля"))
-        self.label_6.setText(_translate("regDialog", "Придумайте вопрос и ответ на него \n"
+        self.famLogLine.setPlaceholderText(_translate("regDialog", "Введите фамилию семьи (логин)"))
+        self.passwordLine.setPlaceholderText(_translate("regDialog", "Придумайте и введите пароль"))
+        self.confPasswordLine.setPlaceholderText(_translate("regDialog", "Введите пароль повторно"))
+        self.recPassLabel.setText(_translate("regDialog", "Восстановление пароля"))
+        self.recPassMoreLabel.setText(_translate("regDialog", "Придумайте вопрос и ответ на него \n"
                                                      "(будет использоваться для напоминания пароля)"))
-        self.lineEdit.setPlaceholderText(_translate("regDialog", "Вопрос"))
-        self.lineEdit_2.setPlaceholderText(_translate("regDialog", "Ответ на ваш вопрос"))
-        self.pushButton.setText(_translate("regDialog", "Сохранить"))
+        self.codeQuestionLine.setPlaceholderText(_translate("regDialog", "Вопрос"))
+        self.codeAnswerLine.setPlaceholderText(_translate("regDialog", "Ответ на ваш вопрос"))
+        self.saveButton.setText(_translate("regDialog", "Сохранить"))
 
-        self.pushButton.clicked.connect(self.reg_log)
+        self.saveButton.clicked.connect(self.reg_log)
 
     def reg_log(self):
         from NewBankAcc import BankAccWin
@@ -183,22 +183,22 @@ class RegWindow(QWidget):
 
         # Проверяем, что все поля заполнены
         if any(field.text().strip() == "" for field in
-               [self.lineEdit_5, self.lineEdit_4, self.lineEdit_3, self.lineEdit, self.lineEdit_2]):
+               [self.famLogLine, self.passwordLine, self.confPasswordLine, self.codeQuestionLine, self.codeAnswerLine]):
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Пожалуйста, заполните все поля.", MessageBox.Icon.Critical)
             return
 
         # Проверяем, что пароли совпадают
-        if self.lineEdit_4.text() != self.lineEdit_3.text():
+        if self.passwordLine.text() != self.confPasswordLine.text():
             error_msg = MessageBox(self)
             error_msg.show_message("Ошибка", "Пароли не совпадают.", MessageBox.Icon.Critical)
             return
 
         # Сохраняем данные пользователя в базе данных
-        login = self.lineEdit_5.text()
-        password = self.lineEdit_4.text()
-        code_question = self.lineEdit.text()
-        code_answer = self.lineEdit_2.text()
+        login = self.famLogLine.text()
+        password = self.passwordLine.text()
+        code_question = self.codeQuestionLine.text()
+        code_answer = self.codeAnswerLine.text()
 
         familly = self.db_manager.add_user(login, password, code_question, code_answer)
         print(familly)

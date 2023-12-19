@@ -121,7 +121,7 @@ class NewTransaction(QWidget):
         self.save_pushButton.setText(_translate("Form", "Сохранить Транзанкцию"))
         self.save_pushButton.clicked.connect(self.add_tr)
         if self.type_tr == 1:
-            Form.setWindowTitle(_translate("Form", "Новый доход"))
+            Form.setWindowTitle(_translate("Form", "WalletWise: Family Finance Tracker"))
             self.categoryComboBox.setCurrentText(_translate("Form", "Выберите категорию"))
             self.categoryComboBox.setItemText(0, _translate("Form", "Выберите категорию"))
             self.categoryComboBox.setItemText(1, _translate("Form", "Работа"))
@@ -129,7 +129,7 @@ class NewTransaction(QWidget):
             self.categoryComboBox.setItemText(3, _translate("Form", "Подарки"))
             self.categoryComboBox.setItemText(4, _translate("Form", "Другое"))
         elif self.type_tr == 0:
-            Form.setWindowTitle(_translate("Form", "Новый расход"))
+            Form.setWindowTitle(_translate("Form", "WalletWise: Family Finance Tracker"))
             self.categoryComboBox.setItemText(0, _translate("Form", "Выберите категорию"))
             self.categoryComboBox.setItemText(1, _translate("Form", "Здоровье"))
             self.categoryComboBox.setItemText(2, _translate("Form", "Еда"))

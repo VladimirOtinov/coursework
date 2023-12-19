@@ -71,22 +71,21 @@ class StartWindow(QWidget):
 "семьи"))
         self.startButton.setText(_translate("startWindow", "Начать"))
 
-        # Прописать проверку наличия данных про пользователя.
+        #Проверка наличия данных про пользователя.
         if self.db_manager.check_user_exists():
             self.startButton.clicked.connect(self.reg_or_log_sh)
         else:
             self.startButton.clicked.connect(self.open_reg)
 
-
-
-
     def reg_or_log_sh(self):
+        #функция для открытия формы выбора авторизации/регистрации
         from RegOrLog import RegLogWindow
         self.reg_or_log = RegLogWindow()
         self.reg_or_log.show()
         self.close()
 
     def open_reg(self):
+        #функция для открытия формы регистрации
         from RegWindow import RegWindow
         self.close()
         self.dlg = RegWindow()

@@ -54,7 +54,7 @@ class NewPassword(QWidget):
         self.lineEdit_4.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.lineEdit_4.setObjectName("lineEdit_4")
+        self.lineEdit_4.setObjectName("passwordLine")
         self.verticalLayout_6.addWidget(self.lineEdit_4)
         self.verticalLayout_4.addWidget(self.frame_5)
         self.frame_6 = QtWidgets.QFrame(parent=self.frame_3)
@@ -68,13 +68,13 @@ class NewPassword(QWidget):
                                    "font: 75 18pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;")
-        self.label_6.setObjectName("label_6")
+        self.label_6.setObjectName("recPassMoreLabel")
         self.verticalLayout_7.addWidget(self.label_6)
         self.lineEdit_5 = QtWidgets.QLineEdit(parent=self.frame_6)
         self.lineEdit_5.setStyleSheet("font-size: 16pt;\n"
                                       "color:rgb(255, 255, 255);\n"
                                       "padding-left: 10px;")
-        self.lineEdit_5.setObjectName("lineEdit_5")
+        self.lineEdit_5.setObjectName("famLogLine")
         self.verticalLayout_7.addWidget(self.lineEdit_5)
         self.lineEdit_6 = QtWidgets.QLineEdit(parent=self.frame_6)
         self.lineEdit_6.setStyleSheet("font-size: 16pt;\n"

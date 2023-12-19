@@ -29,7 +29,7 @@ class RegDialog(QDialog):
                                    "background-color: none;\n"
                                    "border: none;\n"
                                    "font-weight: bold;")
-        self.label_8.setObjectName("label_8")
+        self.label_8.setObjectName("headLabel")
         self.verticalLayout.addWidget(self.label_8)
 
         # Создаем фрейм для данных авторизации
@@ -111,7 +111,7 @@ class RegDialog(QDialog):
                                    "font: 75 12pt \"MS Shell Dlg 2\";\n"
                                    "background-color: none;\n"
                                    "border: none;")
-        self.label_6.setObjectName("label_6")
+        self.label_6.setObjectName("recPassMoreLabel")
         self.verticalLayout_8.addWidget(self.label_6)
 
         # Создаем поля для ввода вопроса и ответа
@@ -149,7 +149,7 @@ class RegDialog(QDialog):
                                       "QPushButton:pressed{\n"
                                       "background-color: rgba(255, 255, 255, 80);\n"
                                       "}")
-        self.pushButton.setObjectName("pushButton")
+        self.pushButton.setObjectName("saveButton")
         self.verticalLayout.addWidget(self.pushButton)
 
         # Переводим текст на форму

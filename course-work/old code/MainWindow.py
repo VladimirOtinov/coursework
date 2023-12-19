@@ -212,7 +212,7 @@ class MyMainWindow(QWidget):
 "font: 75 18pt \"MS Shell Dlg 2\";\n"
 "background-color: none;\n"
 "border: none;")
-        self.label_8.setObjectName("label_8")
+        self.label_8.setObjectName("headLabel")
         self.verticalLayout_5.addWidget(self.label_8)
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
