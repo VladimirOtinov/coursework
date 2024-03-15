@@ -175,6 +175,7 @@ class RegWindow(QWidget):
         self.codeAnswerLine.setPlaceholderText(_translate("regDialog", "Ответ на ваш вопрос"))
         self.saveButton.setText(_translate("regDialog", "Сохранить"))
 
+        #обработка клика по кнопке "Сохранить"
         self.saveButton.clicked.connect(self.reg_log)
 
     def reg_log(self):

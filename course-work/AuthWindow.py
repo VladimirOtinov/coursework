@@ -128,7 +128,7 @@ class AuthWindow(QWidget):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "WalletWise: Family Finance Tracker"))
         self.label.setText(_translate("Form", "Авторизация"))
         self.logLine.setPlaceholderText(_translate("Form", "Введите имя (логин)"))
         self.passLine.setPlaceholderText(_translate("Form", "Введите пароль"))

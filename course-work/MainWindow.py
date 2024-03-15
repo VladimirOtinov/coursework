@@ -721,8 +721,6 @@ class MainWindow(QMainWindow):
         self.excelButton.setText(_translate("MainWindow", "Вывести в excel"))
 
         self.addBankAccButton.clicked.connect(self.add_bank)
-
-
         self.changePersonComboBox.currentTextChanged.connect(self.render_main_info)
 
         self.newTransactionButton.clicked.connect(self.add_tr_in)
@@ -834,7 +832,7 @@ class MainWindow(QMainWindow):
         doh = self.db_manager.select_sum_d(user[0])
         rash = self.db_manager.select_sum_r(user[0])
 
-        self.moneyCurrentBalance.setText(f"{user[3] + doh} рублей")
+        self.moneyCurrentBalance.setText(f"{user[3] + doh - rash} рублей")
         self.earnBalance.setText(f"{doh} рублей")
         self.spendBalance.setText(f"{rash} рублей")
         self.render_trans()
@@ -876,8 +874,8 @@ class MainWindow(QMainWindow):
     def export_excel_file(self):
         from message_box import MessageBox
         from report_generator import ReportGenerator
-        pass
-        """
+        """pass
+        
         идея такая: 
         лист1: реализовать вывод диаграмм с общей статистикой, всего 4 диаграммы, 2 доходы, 2 расходы
         одна с доходами отображает членов семьи, показывает в процентном соотношении кто сколько зааботал
@@ -907,4 +905,4 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print("Ошибка при экспорте в Excel:", e)
             error_msg = MessageBox(self)
-            error_msg.show_message("Ошибка", "Произошла ошибка при экспорте в Excel.", MessageBox.Icon.Error)
+            error_msg.show_message("Ошибка", "Произошла ошибка при экспорте в Excel.", MessageBox.Icon.Critical)

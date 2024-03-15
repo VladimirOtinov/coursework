@@ -137,13 +137,31 @@ class NewTransaction(QWidget):
             self.categoryComboBox.setItemText(4, _translate("Form", "Подарки"))
             self.categoryComboBox.setItemText(5, _translate("Form", "Другое"))
 
-
     def add_tr(self):
+        from message_box import MessageBox
         if self.categoryComboBox.currentText() != "Выберите категорию":
-            cost = self.money_sumLine.text()
+            try:
+                cost = float(self.money_sumLine.text())
+            except ValueError:
+                warn_msg = MessageBox(self)
+                warn_msg.show_message("Ошибка ввода", "Пожалуйста, введите корректное число в поле суммы.", MessageBox.Icon.Warning)
+                return
+
             date = self.dateEdit.date().toPyDate()
             info = self.descriptionLine.text()
             category = self.categoryComboBox.currentText()
             bank_acc_id = self.acc_id
-            self.db_manager.add_tr(cost, date, info, category, bank_acc_id, self.type_tr)
+
+            try:
+                self.db_manager.add_tr(cost, date, info, category, bank_acc_id, self.type_tr)
+            except Exception as e:
+                error_msg = MessageBox(self)
+                error_msg.show_message("Ошибка", f"Произошла ошибка при добавлении транзакции: {str(e)}", MessageBox.Icon.Critical)
+                return
+
             self.close()
+        else:
+
+            warn_msg = MessageBox(self)
+            warn_msg.show_message("Выберите категорию", "Пожалуйста, выберите категорию перед добавлением транзакции.",
+                                  MessageBox.Icon.Warning)
